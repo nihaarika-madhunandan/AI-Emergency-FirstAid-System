@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meditation - HealthHub Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .meditation-body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #f5f0ff 0%, #e8dff5 100%);
+        }
+
+        .meditation-hero {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 50%, #74b9ff 100%);
+            padding: 60px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .meditation-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .meditation-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .meditation-hero-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 48px;
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .meditation-hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .meditation-hero p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .meditation-container {
+            max-width: 1400px;
+            margin: -40px auto 0;
+            padding: 0 24px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .meditation-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-radius: 16px;
+            padding: 20px 28px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            margin-bottom: 32px;
+        }
+
+        .toolbar-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            background: #f5f0ff;
+            color: #6c5ce7;
+        }
+
+        .btn-change-age {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-change-age:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        /* Meditation Cards */
+        .meditation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 28px;
+            margin-bottom: 40px;
+        }
+
+        .meditation-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .meditation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .meditation-card.breathwork::before {
+            background: linear-gradient(90deg, #00b894 0%, #55efc4 100%);
+        }
+
+        .meditation-card.mindfulness::before {
+            background: linear-gradient(90deg, #0984e3 0%, #74b9ff 100%);
+        }
+
+        .meditation-card.sleep::before {
+            background: linear-gradient(90deg, #6c5ce7 0%, #a29bfe 100%);
+        }
+
+        .meditation-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        .meditation-card-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .meditation-card.breathwork .meditation-card-icon {
+            background: linear-gradient(135deg, #00b894 0%, #55efc4 100%);
+            color: white;
+        }
+
+        .meditation-card.mindfulness .meditation-card-icon {
+            background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+            color: white;
+        }
+
+        .meditation-card.sleep .meditation-card-icon {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+        }
+
+        .meditation-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+
+        .meditation-meta {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .meta-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+
+        .meditation-desc {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .benefits {
+            margin-bottom: 24px;
+        }
+
+        .benefits h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 12px;
+        }
+
+        .benefits ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .benefits li {
+            font-size: 13px;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .benefits li i {
+            color: #00b894;
+            font-size: 12px;
+        }
+
+        .btn-start-session {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-start-session.breathwork {
+            background: linear-gradient(135deg, #00b894 0%, #55efc4 100%);
+            color: white;
+        }
+
+        .btn-start-session.mindfulness {
+            background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+            color: white;
+        }
+
+        .btn-start-session.sleep {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+        }
+
+        .btn-start-session:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Session Card */
+        .session-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(108, 92, 231, 0.15);
+            text-align: center;
+            margin-bottom: 40px;
+            border: 3px solid #a29bfe;
+        }
+
+        .session-card h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+
+        .session-card h2 i {
+            color: #6c5ce7;
+        }
+
+        .timer-display {
+            font-size: 64px;
+            font-weight: 800;
+            color: #6c5ce7;
+            margin: 24px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .breathing-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 30px auto;
+        }
+
+        .breathing-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 4s ease-in-out;
+            box-shadow: 0 0 40px rgba(108, 92, 231, 0.3);
+        }
+
+        .breathing-circle.inhale {
+            transform: scale(1.3);
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            box-shadow: 0 0 60px rgba(0, 184, 148, 0.5);
+        }
+
+        .breathing-circle.hold {
+            transform: scale(1.3);
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            box-shadow: 0 0 60px rgba(9, 132, 227, 0.5);
+        }
+
+        .breathing-circle.exhale {
+            transform: scale(1);
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+            box-shadow: 0 0 40px rgba(232, 67, 147, 0.3);
+        }
+
+        .breath-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .breath-timer {
+            font-size: 48px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .breathing-rings {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(108, 92, 231, 0.2);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .ring-1 {
+            width: 240px;
+            height: 240px;
+            animation: ringPulse 3s ease-in-out infinite;
+        }
+
+        .ring-2 {
+            width: 280px;
+            height: 280px;
+            animation: ringPulse 3s ease-in-out infinite 0.5s;
+        }
+
+        .ring-3 {
+            width: 320px;
+            height: 320px;
+            animation: ringPulse 3s ease-in-out infinite 1s;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        .session-message {
+            font-size: 16px;
+            color: #6c757d;
+            margin: 20px 0;
+            min-height: 50px;
+        }
+
+        .btn-stop-session {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #d63031 0%, #ff7675 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-stop-session:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(214, 48, 49, 0.4);
+        }
+
+        /* Guide Section */
+        .guide-section {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .guide-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .guide-section h2 i {
+            color: #6c5ce7;
+        }
+
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .guide-step {
+            background: linear-gradient(135deg, #f5f0ff 0%, #e8dff5 100%);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .guide-step:hover {
+            border-color: #6c5ce7;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.15);
+        }
+
+        .guide-step-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .guide-step h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+
+        .guide-step p {
+            font-size: 13px;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        /* Placeholder */
+        .placeholder-card {
+            background: white;
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .placeholder-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 48px;
+        }
+
+        .placeholder-card h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 12px;
+        }
+
+        .placeholder-card p {
+            font-size: 15px;
+            color: #6c757d;
+            margin-bottom: 24px;
+        }
+
+        .btn-unlock {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-unlock:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .meditation-hero h1 {
+                font-size: 28px;
+            }
+
+            .meditation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits ul {
+                grid-template-columns: 1fr;
+            }
+
+            .timer-display {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+
+<body class="meditation-body">
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🏥 HealthHub Pro</h1>
+            <div class="nav-links">
+                <span class="welcome-text"><i class="fas fa-user-circle"></i> {{ user_name }}</span>
+                <a href="/dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    {% include 'age_verification_modal.html' %}
+
+    {% if age_required %}
+    <section class="meditation-hero">
+        <div class="meditation-hero-content">
+            <div class="meditation-hero-icon">
+                <i class="fas fa-spa"></i>
+            </div>
+            <h1>Meditation & Mindfulness</h1>
+            <p>Find inner peace and mental clarity with guided meditation practices</p>
+            <div class="hero-badges">
+                <span class="hero-badge"><i class="fas fa-brain"></i> Mental Wellness</span>
+                <span class="hero-badge"><i class="fas fa-heart"></i> Stress Relief</span>
+                <span class="hero-badge"><i class="fas fa-moon"></i> Better Sleep</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="meditation-container">
+        <div class="placeholder-card">
+            <div class="placeholder-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2>Personalized Mindfulness Awaits</h2>
+            <p>Select your age range to unlock age-appropriate meditation practices designed for your wellness journey.</p>
+            <button class="btn-unlock" onclick="openAgeModal()">
+                <i class="fas fa-user-check"></i> Select Age Range
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            openAgeModal();
+        });
+    </script>
+
+    {% elif meditations %}
+    <section class="meditation-hero">
+        <div class="meditation-hero-content">
+            <div class="meditation-hero-icon">
+                <i class="fas fa-om"></i>
+            </div>
+            <h1>Your Meditation Practice</h1>
+            <p>Personalized meditation sessions for {{ age_group }} to enhance mindfulness and inner peace</p>
+            <div class="hero-badges">
+                <span class="hero-badge"><i class="fas fa-user"></i> {{ age_group }}</span>
+                <span class="hero-badge"><i class="fas fa-clock"></i> Guided Sessions</span>
+                <span class="hero-badge"><i class="fas fa-leaf"></i> Relaxation</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="meditation-container">
+        <div class="meditation-toolbar">
+            <div class="toolbar-info">
+                <span class="toolbar-tag"><i class="fas fa-users"></i> {{ age_group }}</span>
+                <span class="toolbar-tag"><i class="fas fa-spa"></i> Meditation</span>
+            </div>
+            <button class="btn-change-age" onclick="openAgeModal()">
+                <i class="fas fa-user-edit"></i> Change Age Group
+            </button>
+        </div>
+
+        {% if safety_warning %}
+        <div class="safety-banner">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>{{ safety_warning }}</span>
+        </div>
+        {% endif %}
+
+        <div class="meditation-grid">
+            {% for key, meditation in meditations.items() %}
+            <div class="meditation-card {{ key }}">
+                <div class="meditation-card-icon">
+                    {% if key == 'breathwork' %}<i class="fas fa-wind"></i>
+                    {% elif key == 'mindfulness' %}<i class="fas fa-brain"></i>
+                    {% else %}<i class="fas fa-moon"></i>
+                    {% endif %}
+                </div>
+                <h2>{{ meditation.title }}</h2>
+                <div class="meditation-meta">
+                    <span class="meta-tag"><i class="fas fa-stopwatch"></i> {{ meditation.duration }}</span>
+                </div>
+                <p class="meditation-desc">{{ meditation.description }}</p>
+                <div class="benefits">
+                    <h4><i class="fas fa-star"></i> Benefits</h4>
+                    <ul>
+                        {% for benefit in meditation.benefits %}
+                        <li><i class="fas fa-check-circle"></i> {{ benefit }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <button class="btn-start-session {{ key }}" onclick="startMeditationSession('{{ meditation.title }}', '{{ meditation.duration }}')">
+                    <i class="fas fa-play"></i> Start Session
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="meditationSession" class="session-card" style="display: none;">
+            <h2><i class="fas fa-spa"></i> <span id="sessionTitle">Session</span></h2>
+            <div class="timer-display" id="sessionTimer">3:00</div>
+
+            <div class="breathing-container">
+                <div class="breathing-circle" id="breathingCircle">
+                    <div class="breath-text" id="breathText">INHALE</div>
+                    <div class="breath-timer" id="breathTimer">4</div>
+                </div>
+                <div class="breathing-rings">
+                    <div class="ring ring-1"></div>
+                    <div class="ring ring-2"></div>
+                    <div class="ring ring-3"></div>
+                </div>
+            </div>
+
+            <p id="sessionMessage" class="session-message">Ready to begin...</p>
+            <button class="btn-stop-session" onclick="stopMeditationSession()">
+                <i class="fas fa-stop"></i> Stop Session
+            </button>
+        </div>
+
+        <div class="guide-section">
+            <h2><i class="fas fa-book-open"></i> Meditation Guide for {{ age_group }}</h2>
+            <div class="guide-grid">
+                <div class="guide-step">
+                    <div class="guide-step-number">1</div>
+                    <h3>Find Quiet Space</h3>
+                    <p>Choose a peaceful location free from distractions</p>
+                </div>
+                <div class="guide-step">
+                    <div class="guide-step-number">2</div>
+                    <h3>Sit Comfortably</h3>
+                    <p>Position yourself in a relaxed and upright posture</p>
+                </div>
+                <div class="guide-step">
+                    <div class="guide-step-number">3</div>
+                    <h3>Focus on Breath</h3>
+                    <p>Breathe deeply and observe your natural breathing</p>
+                </div>
+                <div class="guide-step">
+                    <div class="guide-step-number">4</div>
+                    <h3>Clear Your Mind</h3>
+                    <p>Let thoughts pass without judgment or attachment</p>
+                </div>
+                <div class="guide-step">
+                    <div class="guide-step-number">5</div>
+                    <h3>Stay Present</h3>
+                    <p>Remain focused and aware in the current moment</p>
+                </div>
+                <div class="guide-step">
+                    <div class="guide-step-number">6</div>
+                    <h3>Regular Practice</h3>
+                    <p>Meditate daily for best results at your age</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <footer class="footer">
+        <p>&copy; 2026 HealthHub Pro | Mindfulness & Inner Peace</p>
+    </footer>
+
+    <script>
+        let meditationTimer;
+        let breathingTimer;
+        let breathCountdown;
+        let timeLeft = 180;
+        let breathingPhase = 0;
+
+        function openAgeModal() {
+            const modal = document.getElementById('ageModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                const currentAgeGroup = "{{ age_group }}";
+                const select = document.getElementById('ageRangeInput');
+                if (select) {
+                    if (currentAgeGroup === "Kids") select.value = "5-10";
+                    else if (currentAgeGroup === "Teens") select.value = "11-20";
+                    else if (currentAgeGroup === "Adults") select.value = "21-35";
+                    else if (currentAgeGroup === "Seniors") select.value = "56+";
+                }
+            }
+        }
+
+        function saveSelectedAgeRange(page) {
+            const value = document.getElementById('ageRangeSelect').value;
+            fetch('/api/save-age', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ age: value, age_range: value })
+            }).then(() => location.reload());
+        }
+
+        function parseDurationToSeconds(durationStr) {
+            const match = durationStr.match(/(\d+)/);
+            if (match) {
+                return parseInt(match[1]) * 60;
+            }
+            return 180;
+        }
+
+        function runBreathingCycle() {
+            const circle = document.getElementById('breathingCircle');
+            const breathText = document.getElementById('breathText');
+            const breathTimer = document.getElementById('breathTimer');
+            const statusText = document.getElementById('sessionMessage');
+            if (!circle || !breathText || !breathTimer || !statusText) return;
+
+            circle.className = 'breathing-circle';
+
+            if (breathCountdown) clearInterval(breathCountdown);
+
+            if (breathingPhase === 0) {
+                circle.classList.add('inhale');
+                breathText.textContent = 'INHALE';
+                breathTimer.textContent = '4';
+                statusText.innerHTML = "<i class='fas fa-wind'></i> <strong>Inhale deeply...</strong> feel the air fill your lungs";
+
+                let count = 4;
+                breathCountdown = setInterval(() => {
+                    count--;
+                    breathTimer.textContent = count;
+                    if (count <= 0) {
+                        clearInterval(breathCountdown);
+                        breathingPhase = 1;
+                        runBreathingCycle();
+                    }
+                }, 1000);
+            } else if (breathingPhase === 1) {
+                circle.classList.add('hold');
+                breathText.textContent = 'HOLD';
+                breathTimer.textContent = '4';
+                statusText.innerHTML = "<i class='fas fa-hand-paper'></i> <strong>Hold...</strong> rest in the stillness";
+
+                let count = 4;
+                breathCountdown = setInterval(() => {
+                    count--;
+                    breathTimer.textContent = count;
+                    if (count <= 0) {
+                        clearInterval(breathCountdown);
+                        breathingPhase = 2;
+                        runBreathingCycle();
+                    }
+                }, 1000);
+            } else if (breathingPhase === 2) {
+                circle.classList.add('exhale');
+                breathText.textContent = 'EXHALE';
+                breathTimer.textContent = '6';
+                statusText.innerHTML = "<i class='fas fa-cloud'></i> <strong>Exhale slowly...</strong> release all stress and tension";
+
+                let count = 6;
+                breathCountdown = setInterval(() => {
+                    count--;
+                    breathTimer.textContent = count;
+                    if (count <= 0) {
+                        clearInterval(breathCountdown);
+                        breathingPhase = 3;
+                        runBreathingCycle();
+                    }
+                }, 1000);
+            } else {
+                breathText.textContent = 'REST';
+                breathTimer.textContent = '2';
+                statusText.innerHTML = "<i class='fas fa-leaf'></i> <strong>Rest...</strong> prepare for the next breath";
+
+                let count = 2;
+                breathCountdown = setInterval(() => {
+                    count--;
+                    breathTimer.textContent = count;
+                    if (count <= 0) {
+                        clearInterval(breathCountdown);
+                        breathingPhase = 0;
+                        runBreathingCycle();
+                    }
+                }, 1000);
+            }
+        }
+
+        function startMeditationSession(title, duration) {
+            document.getElementById('meditationSession').style.display = 'block';
+            document.getElementById('sessionTitle').textContent = title;
+
+            clearInterval(meditationTimer);
+            clearTimeout(breathingTimer);
+            if (breathCountdown) clearInterval(breathCountdown);
+
+            timeLeft = parseDurationToSeconds(duration);
+            updateTimerDisplay();
+
+            const circle = document.getElementById('breathingCircle');
+            const breathText = document.getElementById('breathText');
+            const breathTimer = document.getElementById('breathTimer');
+            const statusText = document.getElementById('sessionMessage');
+
+            let countdown = 3;
+            breathText.textContent = 'READY';
+            breathTimer.textContent = countdown;
+            statusText.innerHTML = "<i class='fas fa-om'></i> <strong>Get ready...</strong> find a comfortable position";
+            circle.className = 'breathing-circle';
+
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    breathTimer.textContent = countdown;
+                    breathText.textContent = countdown.toString();
+                } else {
+                    clearInterval(countdownInterval);
+                    breathText.textContent = 'INHALE';
+                    breathTimer.textContent = '4';
+                    statusText.innerHTML = "<i class='fas fa-wind'></i> <strong>Start breathing...</strong> follow the circle";
+
+                    setTimeout(() => {
+                        breathingPhase = 0;
+                        runBreathingCycle();
+
+                        meditationTimer = setInterval(() => {
+                            timeLeft -= 1;
+                            updateTimerDisplay();
+                            if (timeLeft <= 0) {
+                                clearInterval(meditationTimer);
+                                clearTimeout(breathingTimer);
+                                if (breathCountdown) clearInterval(breathCountdown);
+                                document.getElementById('sessionMessage').innerHTML = '<i class="fas fa-check-circle"></i> <strong>Session complete!</strong> Take a slow breath and carry this peace with you.';
+                                document.getElementById('breathingCircle').className = 'breathing-circle';
+                                playSessionCompleteSound();
+                            }
+                        }, 1000);
+                    }, 1000);
+                }
+            }, 1000);
+
+            document.getElementById('meditationSession').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function stopMeditationSession() {
+            clearInterval(meditationTimer);
+            clearTimeout(breathingTimer);
+            if (breathCountdown) clearInterval(breathCountdown);
+            document.getElementById('meditationSession').style.display = 'none';
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('sessionTimer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function playSessionCompleteSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                let time = ctx.currentTime;
+
+                const freqs = [261.63, 329.63, 392.00, 523.25];
+                freqs.forEach((freq, index) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, time);
+
+                    gain.gain.setValueAtTime(0, time);
+                    gain.gain.linearRampToValueAtTime(0.2, time + 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, time + 1.2);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start(time);
+                    osc.stop(time + 1.3);
+                    time += 0.15;
+                });
+            } catch (e) {
+                console.error("Audio Complete sound failed", e);
+            }
+        }
+    </script>
+</body>
+</html>

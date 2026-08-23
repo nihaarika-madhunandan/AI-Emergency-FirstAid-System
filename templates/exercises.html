@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Exercises - HealthHub Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .exercise-body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #f0f4f8 0%, #e2e8f0 100%);
+        }
+
+        .exercise-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exercise-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+            animation: heroPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes heroPulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .exercise-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .exercise-hero-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 48px;
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .exercise-hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .exercise-hero p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .exercise-container {
+            max-width: 1400px;
+            margin: -40px auto 0;
+            padding: 0 24px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .exercise-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-radius: 16px;
+            padding: 20px 28px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            margin-bottom: 32px;
+        }
+
+        .toolbar-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .toolbar-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .toolbar-tag.age {
+            background: #e8f4f8;
+            color: #1d3557;
+        }
+
+        .toolbar-tag.intensity {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .toolbar-tag.duration {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .btn-change-age {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-change-age:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .safety-banner {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border-left: 4px solid #ffc107;
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #856404;
+        }
+
+        .safety-banner i {
+            font-size: 20px;
+            color: #ffc107;
+        }
+
+        /* Program Cards */
+        .programs-grid {
+            display: grid;
+            gap: 32px;
+        }
+
+        .program-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .program-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .program-header {
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .program-header.strength {
+            background: linear-gradient(135deg, #E63946 0%, #D62828 100%);
+        }
+
+        .program-header.cardio {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .program-header.flexibility {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .program-header.endurance {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .program-header.balance {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .program-header.cooldown {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .program-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .program-header .duration-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .program-content {
+            padding: 32px;
+        }
+
+        .intensity-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .intensity-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+
+        .intensity-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .intensity-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e9ecef;
+        }
+
+        .intensity-dot.active {
+            background: #ffc107;
+        }
+
+        .intensity-dot.active.high {
+            background: #dc3545;
+        }
+
+        .program-description {
+            font-size: 15px;
+            color: #6c757d;
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+
+        /* Exercise Grid */
+        .exercises-media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .exercise-player-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .exercise-player-card:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .video-screen {
+            position: relative;
+            padding-top: 56.25%;
+            background: #000;
+        }
+
+        .video-screen iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .exercise-card-details {
+            padding: 16px;
+        }
+
+        .exercise-card-details h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1d3557;
+            margin-bottom: 6px;
+        }
+
+        .exercise-card-details p {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .exercise-card-details .tag-duration {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #e8f4f8;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #457b9d;
+        }
+
+        /* Tips Section */
+        .tips-section {
+            margin-top: 48px;
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .tips-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1d3557;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .tip-box:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .tip-box h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1d3557;
+            margin-bottom: 8px;
+        }
+
+        .tip-box p {
+            font-size: 13px;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        /* Placeholder */
+        .placeholder-card {
+            background: white;
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .placeholder-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 48px;
+        }
+
+        .placeholder-card h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1d3557;
+            margin-bottom: 12px;
+        }
+
+        .placeholder-card p {
+            font-size: 15px;
+            color: #6c757d;
+            margin-bottom: 24px;
+        }
+
+        .btn-unlock {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-unlock:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .exercise-hero h1 {
+                font-size: 28px;
+            }
+
+            .exercise-toolbar {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .toolbar-info {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .exercises-media-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body class="exercise-body">
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🏥 HealthHub Pro</h1>
+            <div class="nav-links">
+                <span class="welcome-text"><i class="fas fa-user-circle"></i> {{ user_name }}</span>
+                <a href="/dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    {% include 'age_verification_modal.html' %}
+
+    {% if age_required %}
+    <section class="exercise-hero">
+        <div class="exercise-hero-content">
+            <div class="exercise-hero-icon">
+                <i class="fas fa-dumbbell"></i>
+            </div>
+            <h1>Daily Exercise Programs</h1>
+            <p>Build strength, stamina, and flexibility with personalized workouts designed for your age group</p>
+            <div class="hero-badges">
+                <span class="hero-badge"><i class="fas fa-shield-alt"></i> Age-Safe Workouts</span>
+                <span class="hero-badge"><i class="fas fa-video"></i> Video Guided</span>
+                <span class="hero-badge"><i class="fas fa-clock"></i> Timed Sessions</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="exercise-container">
+        <div class="placeholder-card">
+            <div class="placeholder-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2>Personalized Workouts Await</h2>
+            <p>Select your age range to unlock safety-screened, age-appropriate exercise routines with video demonstrations.</p>
+            <button class="btn-unlock" onclick="openAgeModal()">
+                <i class="fas fa-user-check"></i> Select Age Range
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            openAgeModal();
+        });
+    </script>
+
+    {% elif exercises %}
+    <section class="exercise-hero">
+        <div class="exercise-hero-content">
+            <div class="exercise-hero-icon">
+                <i class="fas fa-fire"></i>
+            </div>
+            <h1>Your Exercise Program</h1>
+            <p>Personalized workouts crafted for your {{ age_group }} age group with {{ intensity }} intensity level</p>
+            <div class="hero-badges">
+                <span class="hero-badge"><i class="fas fa-user"></i> {{ age_group }}</span>
+                <span class="hero-badge"><i class="fas fa-bolt"></i> {{ intensity }}</span>
+                <span class="hero-badge"><i class="fas fa-clock"></i> {{ duration }}</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="exercise-container">
+        <div class="exercise-toolbar">
+            <div class="toolbar-info">
+                <span class="toolbar-tag age"><i class="fas fa-users"></i> {{ age_group }}</span>
+                <span class="toolbar-tag intensity"><i class="fas fa-fire"></i> {{ intensity }}</span>
+                <span class="toolbar-tag duration"><i class="fas fa-clock"></i> {{ duration }}</span>
+            </div>
+            <button class="btn-change-age" onclick="openAgeModal()">
+                <i class="fas fa-user-edit"></i> Change Age Group
+            </button>
+        </div>
+
+        {% if safety_warning %}
+        <div class="safety-banner">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>{{ safety_warning }}</span>
+        </div>
+        {% endif %}
+
+        <div class="programs-grid">
+            {% for key, program in exercises.items() %}
+            <div class="program-card">
+                <div class="program-header {{ key }}">
+                    <h2>
+                        {% if key == 'strength' %}<i class="fas fa-dumbbell"></i>
+                        {% elif key == 'cardio' %}<i class="fas fa-heartbeat"></i>
+                        {% elif key == 'flexibility' %}<i class="fas fa-child"></i>
+                        {% elif key == 'endurance' %}<i class="fas fa-running"></i>
+                        {% elif key == 'balance' %}<i class="fas fa-balance-scale"></i>
+                        {% else %}<i class="fas fa-spa"></i>
+                        {% endif %}
+                        {{ program.title }}
+                    </h2>
+                    <span class="duration-badge">
+                        <i class="fas fa-stopwatch"></i> {{ program.duration if program.duration else duration }}
+                    </span>
+                </div>
+                <div class="program-content">
+                    <div class="intensity-bar">
+                        <span class="intensity-label">Intensity Level:</span>
+                        <div class="intensity-dots">
+                            {% set level = program.intensity.lower() %}
+                            {% if 'low' in level %}
+                            <div class="intensity-dot active"></div>
+                            <div class="intensity-dot"></div>
+                            <div class="intensity-dot"></div>
+                            <div class="intensity-dot"></div>
+                            <div class="intensity-dot"></div>
+                            {% elif 'medium' in level or 'moderate' in level %}
+                            <div class="intensity-dot active"></div>
+                            <div class="intensity-dot active"></div>
+                            <div class="intensity-dot active"></div>
+                            <div class="intensity-dot"></div>
+                            <div class="intensity-dot"></div>
+                            {% else %}
+                            <div class="intensity-dot active high"></div>
+                            <div class="intensity-dot active high"></div>
+                            <div class="intensity-dot active high"></div>
+                            <div class="intensity-dot active high"></div>
+                            <div class="intensity-dot active high"></div>
+                            {% endif %}
+                        </div>
+                        <span style="font-size: 13px; font-weight: 600; color: #6c757d;">{{ program.intensity }}</span>
+                    </div>
+
+                    <p class="program-description">{{ program.description if program.description else 'Age-appropriate workout routine' }}</p>
+
+                    <div class="exercises-media-grid">
+                        {% for exercise in program.exercises %}
+                        {% set player_id = key ~ '-' ~ loop.index0 %}
+                        <div class="exercise-player-card" id="player-card-{{ player_id }}">
+                            <div class="video-screen">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/{{ exercise.youtube_id if exercise.youtube_id else 'dQw4w9WgXcQ' }}?enablejsapi=1&controls=1&rel=0" 
+                                    title="{{ exercise.name }}"
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <div class="exercise-card-details">
+                                <h4>{{ exercise.name }}</h4>
+                                <p><i class="fas fa-crosshairs"></i> {{ exercise.focus }}</p>
+                                <span class="tag-duration"><i class="fas fa-stopwatch"></i> {{ program.exercise_duration }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="tips-section">
+            <h2><i class="fas fa-lightbulb"></i> Exercise Tips for {{ age_group }}</h2>
+            <div class="tips-grid">
+                <div class="tip-box">
+                    <h3><i class="fas fa-tint"></i> Hydration</h3>
+                    <p>Drink water before, during, and after exercise to maintain optimal performance</p>
+                </div>
+                <div class="tip-box">
+                    <h3><i class="fas fa-fire-alt"></i> Warm-up</h3>
+                    <p>Always warm up for 5-10 minutes before starting intense workouts</p>
+                </div>
+                <div class="tip-box">
+                    <h3><i class="fas fa-bed"></i> Recovery</h3>
+                    <p>Rest properly between intense sessions for muscle repair</p>
+                </div>
+                <div class="tip-box">
+                    <h3><i class="fas fa-bullseye"></i> Consistency</h3>
+                    <p>Maintain regular exercise routine for best long-term results</p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const mustPrompt = urlParams.get('prompt') === 'true';
+                if (mustPrompt) {
+                    openAgeModal();
+                    const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                    window.history.replaceState({path: cleanUrl}, '', cleanUrl);
+                }
+            });
+        </script>
+    {% endif %}
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 HealthHub Pro | Your Fitness Companion</p>
+    </footer>
+</body>
+</html>

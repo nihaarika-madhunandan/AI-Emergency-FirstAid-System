@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HealthHub Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dash-primary: #5E9ED8;
+            --dash-secondary: #4A86C0;
+            --dash-accent: #FF7D92;
+            --dash-gradient: linear-gradient(135deg, #FFD6E0 0%, #CBB7F0 35%, #A9D8F0 70%, #B9EFDA 100%);
+        }
+
+        .dash-body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FFF7FA 0%, #F4EFFF 50%, #EFF9FF 100%);
+        }
+
+        /* Navbar & Footer (pastel overrides) */
+        .navbar {
+            background: linear-gradient(135deg, #FFD6E0 0%, #CBB7F0 35%, #A9D8F0 70%, #B9EFDA 100%);
+            box-shadow: 0 4px 20px rgba(255, 125, 146, 0.25);
+        }
+
+        .logo {
+            color: #33587E;
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.7);
+            color: #7A8A97;
+            border-radius: 16px;
+            margin: 0 24px 24px;
+        }
+
+        /* Hero Section */
+        .dash-hero {
+            background: var(--dash-gradient);
+            padding: 40px 20px 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dash-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 125, 146, 0.18) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .dash-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(94, 158, 216, 0.18) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-left {
+            flex: 1;
+        }
+
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px 16px;
+            border-radius: 50px;
+            color: #33587E;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.95);
+        }
+
+        .welcome-badge i {
+            color: #FF7D92;
+        }
+
+        .hero-left h1 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #2C3E50;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-left h1 span {
+            color: #E65F7C;
+        }
+
+        .hero-left p {
+            font-size: 16px;
+            color: #4E6174;
+            max-width: 500px;
+        }
+
+        .hero-right {
+            display: flex;
+            gap: 16px;
+        }
+
+        .hero-stat {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px 24px;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .hero-stat i {
+            font-size: 24px;
+            color: #FF7D92;
+            margin-bottom: 8px;
+        }
+
+        .hero-stat .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #33587E;
+        }
+
+        .hero-stat .stat-label {
+            font-size: 12px;
+            color: #6B7C8C;
+            margin-top: 4px;
+        }
+
+        /* Main Container */
+        .dash-container {
+            max-width: 1200px;
+            margin: -60px auto 0;
+            padding: 0 24px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .quick-action-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+        }
+
+        .quick-action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            transition: height 0.3s ease;
+        }
+
+        .quick-action-card:hover::before {
+            height: 6px;
+        }
+
+        .quick-action-card.firstaid::before {
+            background: linear-gradient(90deg, #F04438 0%, #D92D20 100%);
+        }
+
+        .quick-action-card.firstaid {
+            box-shadow: 0 10px 40px rgba(240, 68, 56, 0.18);
+        }
+
+        .quick-action-card.firstaid:hover {
+            box-shadow: 0 20px 50px rgba(240, 68, 56, 0.35);
+        }
+
+        .quick-action-card.exercise::before {
+            background: linear-gradient(90deg, #5FA8E8 0%, #2F82D8 100%);
+        }
+
+        .quick-action-card.meditation::before {
+            background: linear-gradient(90deg, #AB8EE9 0%, #7C5CE0 100%);
+        }
+
+        .quick-action-card.relaxation::before {
+            background: linear-gradient(90deg, #66D6AC 0%, #2FBF8F 100%);
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        .action-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .quick-action-card:hover .action-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .action-icon.firstaid {
+            background: linear-gradient(135deg, #F04438 0%, #D92D20 100%);
+        }
+
+        .action-icon.exercise {
+            background: linear-gradient(135deg, #5FA8E8 0%, #2F82D8 100%);
+        }
+
+        .action-icon.meditation {
+            background: linear-gradient(135deg, #AB8EE9 0%, #7C5CE0 100%);
+        }
+
+        .action-icon.relaxation {
+            background: linear-gradient(135deg, #66D6AC 0%, #2FBF8F 100%);
+        }
+
+        .quick-action-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+
+        .quick-action-card p {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn.firstaid {
+            background: linear-gradient(135deg, #F04438 0%, #D92D20 100%);
+        }
+
+        .action-btn.exercise {
+            background: linear-gradient(135deg, #5FA8E8 0%, #2F82D8 100%);
+        }
+
+        .action-btn.meditation {
+            background: linear-gradient(135deg, #AB8EE9 0%, #7C5CE0 100%);
+        }
+
+        .action-btn.relaxation {
+            background: linear-gradient(135deg, #66D6AC 0%, #2FBF8F 100%);
+        }
+
+        /* Features Section */
+        .features-section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3436;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header h2 i {
+            color: var(--dash-primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            border-color: var(--dash-primary);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 45px rgba(94, 158, 216, 0.25);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .feature-icon.red {
+            background: linear-gradient(135deg, #F04438 0%, #D92D20 100%);
+        }
+
+        .feature-icon.purple {
+            background: linear-gradient(135deg, #5FA8E8 0%, #2F82D8 100%);
+        }
+
+        .feature-icon.violet {
+            background: linear-gradient(135deg, #AB8EE9 0%, #7C5CE0 100%);
+        }
+
+        .feature-icon.blue {
+            background: linear-gradient(135deg, #66D6AC 0%, #2FBF8F 100%);
+        }
+
+        .feature-icon.green {
+            background: linear-gradient(135deg, #A6E065 0%, #7FC93F 100%);
+        }
+
+        .feature-icon.orange {
+            background: linear-gradient(135deg, #FFB577 0%, #FF9448 100%);
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        /* Tips & Info Section */
+        .info-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+        }
+
+        .info-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3 i {
+            color: var(--dash-primary);
+        }
+
+        .tip-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .tip-item:hover {
+            background: #FFF1F6;
+            transform: translateX(4px);
+        }
+
+        .tip-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .tip-icon.health {
+            background: linear-gradient(135deg, #A6E065 0%, #7FC93F 100%);
+        }
+
+        .tip-icon.fitness {
+            background: linear-gradient(135deg, #5FA8E8 0%, #2F82D8 100%);
+        }
+
+        .tip-icon.mind {
+            background: linear-gradient(135deg, #AB8EE9 0%, #7C5CE0 100%);
+        }
+
+        .tip-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 4px;
+        }
+
+        .tip-content p {
+            font-size: 13px;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+
+        /* Emergency Banner */
+        .emergency-banner {
+            background: linear-gradient(135deg, #F04438 0%, #D92D20 100%);
+            border-radius: 20px;
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(240, 68, 56, 0.4);
+        }
+
+        .emergency-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .emergency-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+        }
+
+        .emergency-text h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .emergency-text p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .emergency-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: white;
+            color: #D92D20;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .emergency-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* User Profile Card */
+        .profile-section {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #FF9EAC 0%, #B79CF0 50%, #7EB6E8 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 42px;
+            color: white;
+            box-shadow: 0 12px 30px rgba(255, 125, 146, 0.35);
+        }
+
+        .profile-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 4px;
+        }
+
+        .profile-card .user-email {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .profile-stat {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .profile-stat .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--dash-primary);
+        }
+
+        .profile-stat .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        /* Weekly Progress */
+        .progress-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+        }
+
+        .progress-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-card h3 i {
+            color: var(--dash-primary);
+        }
+
+        .progress-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .progress-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .progress-label {
+            width: 120px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2d3436;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-label i {
+            font-size: 16px;
+        }
+
+        .progress-bar-container {
+            flex: 1;
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+
+        .progress-fill.exercise {
+            background: linear-gradient(90deg, #5FA8E8 0%, #2F82D8 100%);
+        }
+
+        .progress-fill.meditation {
+            background: linear-gradient(90deg, #AB8EE9 0%, #7C5CE0 100%);
+        }
+
+        .progress-fill.relaxation {
+            background: linear-gradient(90deg, #66D6AC 0%, #2FBF8F 100%);
+        }
+
+        .progress-fill.firstaid {
+            background: linear-gradient(90deg, #F04438 0%, #D92D20 100%);
+        }
+
+        .progress-percent {
+            width: 50px;
+            text-align: right;
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d3436;
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            color: #33587E;
+            border: 1px solid rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .welcome-text {
+            color: #33587E;
+            font-size: 14px;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 32px;
+            }
+
+            .hero-left p {
+                margin: 0 auto;
+            }
+
+            .hero-right {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .profile-section {
+                grid-template-columns: 1fr;
+            }
+
+            .info-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dash-hero h1 {
+                font-size: 28px;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .emergency-banner {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .emergency-left {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body class="dash-body">
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo"><i class="fas fa-heartbeat"></i> HealthHub Pro</h1>
+            <div class="nav-links">
+                <span class="welcome-text"><i class="fas fa-user-circle"></i> {{ user_name }}</span>
+                <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="dash-hero">
+        <div class="hero-content">
+            <div class="hero-left">
+                <div class="welcome-badge">
+                    <i class="fas fa-star"></i> Welcome back
+                </div>
+                <h1>Good Morning, <span>{{ user_name }}</span></h1>
+                <p>Your wellness journey continues. Choose an activity below to get started with your personalized health experience.</p>
+            </div>
+            <div class="hero-right">
+                <div class="hero-stat">
+                    <i class="fas fa-heartbeat"></i>
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Activities</div>
+                </div>
+                <div class="hero-stat">
+                    <i class="fas fa-shield-alt"></i>
+                    <div class="stat-value">AI</div>
+                    <div class="stat-label">Powered</div>
+                </div>
+                <div class="hero-stat">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Available</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="dash-container">
+        <!-- Emergency Banner -->
+        <div class="emergency-banner">
+            <div class="emergency-left">
+                <div class="emergency-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="emergency-text">
+                    <h3>Need Emergency Help?</h3>
+                    <p>Get instant AI-powered first aid guidance for injuries and emergencies</p>
+                </div>
+            </div>
+            <a href="/first-aid" class="emergency-btn">
+                <i class="fas fa-medkit"></i> Get First Aid
+            </a>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="/first-aid" class="quick-action-card firstaid">
+                <div class="action-icon firstaid">
+                    <i class="fas fa-hand-holding-medical"></i>
+                </div>
+                <h3>First Aid Guide</h3>
+                <p>AI-powered emergency care with injury detection</p>
+                <span class="action-btn firstaid"><i class="fas fa-arrow-right"></i> Get Started</span>
+            </a>
+
+            <a href="/exercises?prompt=true" class="quick-action-card exercise">
+                <div class="action-icon exercise">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <h3>Daily Exercises</h3>
+                <p>Personalized fitness routines for your age group</p>
+                <span class="action-btn exercise"><i class="fas fa-arrow-right"></i> Explore</span>
+            </a>
+
+            <a href="/meditation" class="quick-action-card meditation">
+                <div class="action-icon meditation">
+                    <i class="fas fa-spa"></i>
+                </div>
+                <h3>Meditation</h3>
+                <p>Guided sessions for mindfulness and peace</p>
+                <span class="action-btn meditation"><i class="fas fa-arrow-right"></i> Start</span>
+            </a>
+
+            <a href="/relaxation" class="quick-action-card relaxation">
+                <div class="action-icon relaxation">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3>Relaxation</h3>
+                <p>Yoga, music therapy, and aromatherapy</p>
+                <span class="action-btn relaxation"><i class="fas fa-arrow-right"></i> Discover</span>
+            </a>
+        </div>
+
+        <!-- Profile & Progress Section -->
+        <div class="profile-section">
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3>{{ user_name }}</h3>
+                <p class="user-email">Health Enthusiast</p>
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Programs</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="stat-value">AI</div>
+                        <div class="stat-label">Enhanced</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-card">
+                <h3><i class="fas fa-chart-line"></i> Weekly Activity Overview</h3>
+                <div class="progress-bars">
+                    <div class="progress-item">
+                        <div class="progress-label"><i class="fas fa-dumbbell" style="color: #2F82D8;"></i> Exercise</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-fill exercise" style="width: 75%;"></div>
+                        </div>
+                        <div class="progress-percent">75%</div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label"><i class="fas fa-spa" style="color: #7C5CE0;"></i> Meditation</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-fill meditation" style="width: 60%;"></div>
+                        </div>
+                        <div class="progress-percent">60%</div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label"><i class="fas fa-leaf" style="color: #2FBF8F;"></i> Relaxation</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-fill relaxation" style="width: 45%;"></div>
+                        </div>
+                        <div class="progress-percent">45%</div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label"><i class="fas fa-medkit" style="color: #E0201F;"></i> First Aid</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-fill firstaid" style="width: 90%;"></div>
+                        </div>
+                        <div class="progress-percent">90%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features-section">
+            <div class="section-header">
+                <h2><i class="fas fa-star"></i> Why HealthHub Pro?</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon red">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI-Powered Analysis</h3>
+                    <p>Advanced artificial intelligence analyzes injuries and provides accurate first aid recommendations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon purple">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3>Age-Safe Programs</h3>
+                    <p>All exercises and activities are screened and personalized for your specific age group</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon violet">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Mental Wellness</h3>
+                    <p>Guided meditation and mindfulness sessions for improved mental health and clarity</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon blue">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Video Guided</h3>
+                    <p>Professional video demonstrations for every exercise and yoga pose</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon green">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>24/7 Availability</h3>
+                    <p>Access health guidance anytime, anywhere - your wellness never sleeps</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon orange">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Secure & Private</h3>
+                    <p>Your health data is encrypted and never shared with third parties</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="info-section">
+            <div class="info-card">
+                <h3><i class="fas fa-lightbulb"></i> Health Tips</h3>
+                <div class="tip-list">
+                    <div class="tip-item">
+                        <div class="tip-icon health"><i class="fas fa-tint"></i></div>
+                        <div class="tip-content">
+                            <h4>Stay Hydrated</h4>
+                            <p>Drink at least 8 glasses of water daily for optimal health</p>
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon fitness"><i class="fas fa-running"></i></div>
+                        <div class="tip-content">
+                            <h4>Move Regularly</h4>
+                            <p>Take breaks every hour to stretch and move your body</p>
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon mind"><i class="fas fa-moon"></i></div>
+                        <div class="tip-content">
+                            <h4>Prioritize Sleep</h4>
+                            <p>Aim for 7-9 hours of quality sleep each night</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3><i class="fas fa-info-circle"></i> Quick Facts</h3>
+                <div class="tip-list">
+                    <div class="tip-item">
+                        <div class="tip-icon health"><i class="fas fa-heart"></i></div>
+                        <div class="tip-content">
+                            <h4>Heart Health</h4>
+                            <p>150 minutes of moderate exercise weekly reduces heart disease risk</p>
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon fitness"><i class="fas fa-brain"></i></div>
+                        <div class="tip-content">
+                            <h4>Mental Health</h4>
+                            <p>10 minutes of daily meditation can reduce anxiety by 60%</p>
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon mind"><i class="fas fa-om"></i></div>
+                        <div class="tip-content">
+                            <h4>Yoga Benefits</h4>
+                            <p>Regular yoga practice improves flexibility and reduces stress</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 HealthHub Pro | Your Complete Wellness Companion</p>
+    </footer>
+
+    <script>
+        // Animate progress bars on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressFills = document.querySelectorAll('.progress-fill');
+            progressFills.forEach(fill => {
+                const width = fill.style.width;
+                fill.style.width = '0';
+                setTimeout(() => {
+                    fill.style.width = width;
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>

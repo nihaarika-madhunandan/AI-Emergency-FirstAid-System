@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Aid Assistant - HealthHub Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --firstaid-primary: #E63946;
+            --firstaid-secondary: #457B9D;
+            --firstaid-accent: #1D3557;
+            --firstaid-light: #F1FAEE;
+            --firstaid-gradient: linear-gradient(135deg, #E63946 0%, #D62828 50%, #C1121F 100%);
+            --firstaid-gradient-blue: linear-gradient(135deg, #457B9D 0%, #1D3557 100%);
+            --firstaid-shadow: 0 20px 60px rgba(230, 57, 70, 0.15);
+            --firstaid-card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .firstaid-body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .firstaid-hero {
+            background: var(--firstaid-gradient);
+            padding: 60px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .firstaid-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+            animation: pulse-bg 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .firstaid-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .firstaid-hero-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 48px;
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .firstaid-hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .firstaid-hero p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .firstaid-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .firstaid-badge i {
+            color: #FFE66D;
+        }
+
+        .firstaid-container {
+            max-width: 1200px;
+            margin: -40px auto 0;
+            padding: 0 24px 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .firstaid-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .firstaid-main-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: var(--firstaid-card-shadow);
+            overflow: hidden;
+        }
+
+        .firstaid-card-header {
+            background: var(--firstaid-gradient-blue);
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .firstaid-card-header-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .firstaid-card-header h2 {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .firstaid-card-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .firstaid-card-body {
+            padding: 32px;
+        }
+
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            right: 40px;
+            height: 3px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #adb5bd;
+            transition: all 0.3s ease;
+        }
+
+        .step-circle.active {
+            background: var(--firstaid-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
+        }
+
+        .step-circle.completed {
+            background: #28a745;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #adb5bd;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step-label.active {
+            color: var(--firstaid-primary);
+        }
+
+        /* Form Sections */
+        .form-step {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .upload-zone {
+            border: 3px dashed #dee2e6;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            position: relative;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--firstaid-primary);
+            background: #fff5f5;
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--firstaid-primary);
+            background: #ffe8e8;
+            transform: scale(1.02);
+        }
+
+        .upload-zone.has-file {
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+
+        .upload-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #E63946 0%, #D62828 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+            color: white;
+        }
+
+        .upload-zone h4 {
+            font-size: 16px;
+            color: var(--firstaid-accent);
+            margin-bottom: 8px;
+        }
+
+        .upload-zone p {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .upload-zone .browse-btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 24px;
+            background: var(--firstaid-gradient);
+            color: white;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone .browse-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .file-preview {
+            display: none;
+            margin-top: 16px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .file-preview.show {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-preview img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .file-preview .file-info {
+            flex: 1;
+        }
+
+        .file-preview .file-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--firstaid-accent);
+        }
+
+        .file-preview .file-size {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .file-preview .remove-file {
+            color: var(--firstaid-primary);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* Injury Cards */
+        .injury-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .injury-card {
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .injury-card:hover {
+            border-color: var(--firstaid-secondary);
+            background: #e8f4f8;
+            transform: translateY(-2px);
+        }
+
+        .injury-card.selected {
+            border-color: var(--firstaid-primary);
+            background: #fff5f5;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.15);
+        }
+
+        .injury-card i {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: var(--firstaid-secondary);
+        }
+
+        .injury-card.selected i {
+            color: var(--firstaid-primary);
+        }
+
+        .injury-card span {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--firstaid-accent);
+        }
+
+        .form-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .form-divider::before,
+        .form-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #dee2e6;
+        }
+
+        .form-divider span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #adb5bd;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-floating-input {
+            position: relative;
+        }
+
+        .form-floating-input i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+            font-size: 16px;
+        }
+
+        .form-floating-input input {
+            padding-left: 48px;
+        }
+
+        /* Kit Section */
+        .kit-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .kit-card {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .kit-card:hover {
+            border-color: var(--firstaid-secondary);
+        }
+
+        .kit-card.selected {
+            border-color: var(--firstaid-primary);
+            background: #fff5f5;
+        }
+
+        .kit-card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #457B9D 0%, #1D3557 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .kit-card h4 {
+            font-size: 14px;
+            color: var(--firstaid-accent);
+            margin-bottom: 4px;
+        }
+
+        .kit-card p {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        /* Navigation Buttons */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .btn-next {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: var(--firstaid-gradient);
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(230, 57, 70, 0.4);
+        }
+
+        .btn-submit-final {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-submit-final:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-submit-final i {
+            font-size: 20px;
+        }
+
+        /* Sidebar */
+        .firstaid-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--firstaid-card-shadow);
+        }
+
+        .sidebar-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--firstaid-accent);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-card h3 i {
+            color: var(--firstaid-primary);
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: #e8f4f8;
+            transform: translateX(4px);
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--firstaid-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .feature-text h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--firstaid-accent);
+            margin-bottom: 2px;
+        }
+
+        .feature-text p {
+            font-size: 12px;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+
+        /* Emergency Stats */
+        .emergency-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .stat-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-item i {
+            font-size: 24px;
+            color: var(--firstaid-primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-item .stat-number {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--firstaid-accent);
+        }
+
+        .stat-item .stat-label {
+            font-size: 11px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Safety Tips */
+        .safety-tips {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .safety-tip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: #fff3cd;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #856404;
+        }
+
+        .safety-tip i {
+            color: #ffc107;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .firstaid-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .firstaid-sidebar {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .sidebar-card {
+                flex: 1;
+                min-width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .firstaid-hero h1 {
+                font-size: 28px;
+            }
+
+            .injury-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .kit-options {
+                grid-template-columns: 1fr;
+            }
+
+            .emergency-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body class="firstaid-body">
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🏥 HealthHub Pro</h1>
+            <a href="/dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Dashboard</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="firstaid-hero">
+        <div class="firstaid-hero-content">
+            <div class="firstaid-hero-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h1>AI-Powered First Aid Assistant</h1>
+            <p>Get instant, expert-level emergency care guidance powered by advanced artificial intelligence. Upload an image or describe your symptoms for personalized treatment recommendations.</p>
+            <div class="firstaid-badge">
+                <i class="fas fa-shield-alt"></i>
+                Medical-Grade AI Analysis
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="firstaid-container">
+        <div class="firstaid-grid">
+            <!-- Main Form Card -->
+            <div class="firstaid-main-card">
+                <div class="firstaid-card-header">
+                    <div class="firstaid-card-header-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div>
+                        <h2>Emergency Assessment</h2>
+                        <p>Complete the steps below for accurate analysis</p>
+                    </div>
+                </div>
+
+                <div class="firstaid-card-body">
+                    <form action="/analyze" method="POST" enctype="multipart/form-data" id="firstaid-form">
+                        <!-- Progress Steps -->
+                        <div class="progress-steps">
+                            <div class="progress-step">
+                                <div class="step-circle active" id="step1-circle">1</div>
+                                <span class="step-label active" id="step1-label">Image</span>
+                            </div>
+                            <div class="progress-step">
+                                <div class="step-circle" id="step2-circle">2</div>
+                                <span class="step-label" id="step2-label">Injury</span>
+                            </div>
+                            <div class="progress-step">
+                                <div class="step-circle" id="step3-circle">3</div>
+                                <span class="step-label" id="step3-label">Kit</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 1: Image Upload -->
+                        <div class="form-step active" id="step1">
+                            <h3 style="font-size: 18px; font-weight: 700; color: var(--firstaid-accent); margin-bottom: 8px;">
+                                <i class="fas fa-camera" style="color: var(--firstaid-primary);"></i> Upload Injury Image
+                            </h3>
+                            <p style="font-size: 13px; color: #6c757d; margin-bottom: 20px;">
+                                Our AI can analyze images to detect injury type, severity, and provide accurate recommendations
+                            </p>
+
+                            <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h4>Drag & drop your image here</h4>
+                                <p>or click to browse files</p>
+                                <span class="browse-btn"><i class="fas fa-folder-open"></i> Choose File</span>
+                                <input type="file" name="image" id="file-input" accept="image/*">
+                            </div>
+
+                            <div class="file-preview" id="file-preview">
+                                <img id="preview-img" src="" alt="Preview">
+                                <div class="file-info">
+                                    <div class="file-name" id="file-name">image.jpg</div>
+                                    <div class="file-size" id="file-size">0 KB</div>
+                                </div>
+                                <i class="fas fa-times-circle remove-file" onclick="removeFile()"></i>
+                            </div>
+
+                            <div class="form-navigation">
+                                <div></div>
+                                <button type="button" class="btn-next" onclick="nextStep(2)">
+                                    Continue <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Injury Selection -->
+                        <div class="form-step" id="step2">
+                            <h3 style="font-size: 18px; font-weight: 700; color: var(--firstaid-accent); margin-bottom: 8px;">
+                                <i class="fas fa-notes-medical" style="color: var(--firstaid-primary);"></i> Select Injury Type
+                            </h3>
+                            <p style="font-size: 13px; color: #6c757d; margin-bottom: 20px;">
+                                Choose the type that best describes the injury or enter a custom description
+                            </p>
+
+                            <div class="injury-grid">
+                                {% set injury_icons = {
+                                    'Cut': 'fa-cut',
+                                    'Burn': 'fa-fire',
+                                    'Fracture': 'fa-bone',
+                                    'Sprain': 'fa-ankle',
+                                    'Bleeding': 'fa-tint',
+                                    'Choking': 'fa-lungs',
+                                    'Allergic Reaction': 'fa-allergies',
+                                    'Head Injury': 'fa-head-side',
+                                    'Eye Injury': 'fa-eye'
+                                } %}
+                                {% for injury in injury_types %}
+                                <div class="injury-card" data-value="{{ injury }}" onclick="selectInjury(this, '{{ injury }}')">
+                                    <i class="fas {{ injury_icons.get(injury, 'fa-first-aid') }}"></i>
+                                    <span>{{ injury }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <input type="hidden" name="injury_dropdown" id="injury_dropdown">
+
+                            <div class="form-divider">
+                                <span>or describe manually</span>
+                            </div>
+
+                            <div class="form-floating-input">
+                                <i class="fas fa-edit"></i>
+                                <input type="text" name="injury_text" id="injury_text" 
+                                       placeholder="e.g., deep cut on finger with bleeding" 
+                                       class="form-input" style="padding-left: 48px;">
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn-back" onclick="prevStep(1)">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                                <button type="button" class="btn-next" onclick="nextStep(3)">
+                                    Continue <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Kit Information -->
+                        <div class="form-step" id="step3">
+                            <h3 style="font-size: 18px; font-weight: 700; color: var(--firstaid-accent); margin-bottom: 8px;">
+                                <i class="fas fa-first-aid" style="color: var(--firstaid-primary);"></i> First Aid Kit
+                            </h3>
+                            <p style="font-size: 13px; color: #6c757d; margin-bottom: 20px;">
+                                Let us know about your available supplies for tailored recommendations
+                            </p>
+
+                            <label style="font-size: 13px; font-weight: 600; color: var(--firstaid-accent); margin-bottom: 12px; display: block;">
+                                Do you have a first aid kit available?
+                            </label>
+                            <div class="kit-options" style="margin-bottom: 24px;">
+                                <div class="kit-card selected" onclick="selectKit('yes', this)">
+                                    <div class="kit-card-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <h4>Yes, I have a kit</h4>
+                                    <p>Standard or advanced supplies available</p>
+                                </div>
+                                <div class="kit-card" onclick="selectKit('no', this)">
+                                    <div class="kit-card-icon" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%);">
+                                        <i class="fas fa-times"></i>
+                                    </div>
+                                    <h4>No kit available</h4>
+                                    <p>Will improvise with available items</p>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="kit" id="kit" value="yes">
+
+                            <div id="kit-type-section">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--firstaid-accent); margin-bottom: 12px; display: block;">
+                                    What type of kit do you have?
+                                </label>
+                                <div class="kit-options">
+                                    <div class="kit-card selected" onclick="selectKitType('basic', this)">
+                                        <div class="kit-card-icon" style="background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);">
+                                            <i class="fas fa-medkit"></i>
+                                        </div>
+                                        <h4>Basic Kit</h4>
+                                        <p>Bandages, antiseptic, tape</p>
+                                    </div>
+                                    <div class="kit-card" onclick="selectKitType('advanced', this)">
+                                        <div class="kit-card-icon" style="background: linear-gradient(135deg, #28a745 0%, #218838 100%);">
+                                            <i class="fas fa-hospital"></i>
+                                        </div>
+                                        <h4>Advanced Kit</h4>
+                                        <p>Complete medical supplies</p>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="kit_type" id="kit_type" value="basic">
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn-back" onclick="prevStep(2)">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                                <button type="submit" class="btn-submit-final">
+                                    <i class="fas fa-robot"></i> Analyze with AI
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="firstaid-sidebar">
+                <!-- Features Card -->
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-magic"></i> AI Capabilities</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Smart Analysis</h4>
+                                <p>AI detects injury type and severity from images</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon" style="background: linear-gradient(135deg, #457B9D 0%, #1D3557 100%);">
+                                <i class="fas fa-list-check"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Step-by-Step Guide</h4>
+                                <p>Clear, actionable first aid instructions</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon" style="background: linear-gradient(135deg, #28a745 0%, #218838 100%);">
+                                <i class="fas fa-box-open"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Kit Optimization</h4>
+                                <p>Recommendations based on your available supplies</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon" style="background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Professional Grade</h4>
+                                <p>Medical-standard emergency protocols</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Card -->
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-chart-line"></i> Emergency Stats</h3>
+                    <div class="emergency-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-bolt"></i>
+                            <div class="stat-number">&lt;3s</div>
+                            <div class="stat-label">Response Time</div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-award"></i>
+                            <div class="stat-number">98%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-globe"></i>
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Available</div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Secure</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Safety Tips Card -->
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Safety Reminders</h3>
+                    <div class="safety-tips">
+                        <div class="safety-tip">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>Always call emergency services for life-threatening situations</span>
+                        </div>
+                        <div class="safety-tip">
+                            <i class="fas fa-hand-holding-medical"></i>
+                            <span>Do not move the patient if spinal injury is suspected</span>
+                        </div>
+                        <div class="safety-tip">
+                            <i class="fas fa-clock"></i>
+                            <span>Time is critical - act quickly but calmly</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 HealthHub Pro | Emergency First Aid Assistance</p>
+    </footer>
+
+    <script>
+        // File Upload
+        const uploadZone = document.getElementById('upload-zone');
+        const fileInput = document.getElementById('file-input');
+        const filePreview = document.getElementById('file-preview');
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                showPreview(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                showPreview(e.target.files[0]);
+            }
+        });
+
+        function showPreview(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('preview-img').src = e.target.result;
+                document.getElementById('file-name').textContent = file.name;
+                document.getElementById('file-size').textContent = formatSize(file.size);
+                filePreview.classList.add('show');
+                uploadZone.classList.add('has-file');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+
+        function removeFile() {
+            fileInput.value = '';
+            filePreview.classList.remove('show');
+            uploadZone.classList.remove('has-file');
+        }
+
+        // Step Navigation
+        let currentStep = 1;
+
+        function nextStep(step) {
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + step).classList.add('active');
+            
+            document.getElementById('step' + currentStep + '-circle').classList.remove('active');
+            document.getElementById('step' + currentStep + '-circle').classList.add('completed');
+            document.getElementById('step' + currentStep + '-circle').innerHTML = '<i class="fas fa-check"></i>';
+            document.getElementById('step' + currentStep + '-label').classList.remove('active');
+            
+            document.getElementById('step' + step + '-circle').classList.add('active');
+            document.getElementById('step' + step + '-label').classList.add('active');
+            
+            currentStep = step;
+        }
+
+        function prevStep(step) {
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + step).classList.add('active');
+            
+            document.getElementById('step' + currentStep + '-circle').classList.remove('active');
+            document.getElementById('step' + step + '-circle').classList.remove('completed');
+            document.getElementById('step' + step + '-circle').innerHTML = step;
+            document.getElementById('step' + step + '-label').classList.add('active');
+            
+            document.getElementById('step' + step + '-circle').classList.add('active');
+            document.getElementById('step' + currentStep + '-label').classList.remove('active');
+            
+            currentStep = step;
+        }
+
+        // Injury Selection
+        function selectInjury(element, value) {
+            document.querySelectorAll('.injury-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('injury_dropdown').value = value;
+            document.getElementById('injury_text').value = '';
+        }
+
+        document.getElementById('injury_text').addEventListener('input', function() {
+            if (this.value) {
+                document.querySelectorAll('.injury-card').forEach(card => card.classList.remove('selected'));
+                document.getElementById('injury_dropdown').value = '';
+            }
+        });
+
+        // Kit Selection
+        function selectKit(value, element) {
+            document.querySelectorAll('.kit-options:first-of-type .kit-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('kit').value = value;
+            document.getElementById('kit-type-section').style.display = value === 'yes' ? 'block' : 'none';
+        }
+
+        function selectKitType(value, element) {
+            element.parentElement.querySelectorAll('.kit-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('kit_type').value = value;
+        }
+    </script>
+</body>
+</html>

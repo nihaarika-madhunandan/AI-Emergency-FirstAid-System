@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>First Aid Result - HealthHub Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🏥 HealthHub Pro</h1>
+            <a href="/first-aid" class="back-link">← Back to First Aid</a>
+        </div>
+    </nav>
+
+    <div class="content-container result-container">
+        <div class="result-header">
+            <h1 class="result-title">🩹 First Aid Guide</h1>
+            <h2 class="injury-name">{{ injury }}</h2>
+        </div>
+
+        <!-- Severity Indicator -->
+        <div class="severity-banner" style="background-color: {{ severity_color }}20; border-left: 5px solid {{ severity_color }};">
+            <div class="severity-content">
+                <span class="severity-icon">{{ severity_icon }}</span>
+                <div class="severity-info">
+                    <span class="severity-label">Severity Assessment:</span>
+                    <span class="severity-value" style="color: {{ severity_color }};">{{ severity }}</span>
+                    <span class="confidence-badge">AI Confidence: {{ "%.0f"|format(confidence * 100) }}%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Analysis (if available) -->
+        {% if ai_analysis and ai_analysis.source != "rule" %}
+        <div class="ai-analysis-box">
+            <h3>🤖 AI Image Analysis</h3>
+            <p>{{ ai_analysis.description }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Steps (including immediate actions) -->
+        <div class="steps-container">
+            <h3 class="steps-title">📋 Treatment Steps</h3>
+            <ul class="steps-list">
+                {% for step in result %}
+                    {% if step == "---" %}
+                    <li class="step-divider"><hr></li>
+                    {% else %}
+                    <li class="step-item">
+                        <span class="step-number">{{ loop.index }}</span>
+                        <span class="step-text">{{ step }}</span>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Warning Alert -->
+        <div class="warning-box">
+            <strong>⚠️ Important:</strong> If symptoms worsen or the injury is severe, seek professional medical help immediately. Call emergency services if needed.
+        </div>
+
+        <!-- Navigation -->
+        <div class="result-actions">
+            <a href="/first-aid" class="btn-secondary">🔄 Analyze Another Injury</a>
+            <a href="/dashboard" class="btn-primary">🏠 Back to Dashboard</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 HealthHub Pro | Emergency First Aid Guidance</p>
+    </footer>
+</body>
+</html>

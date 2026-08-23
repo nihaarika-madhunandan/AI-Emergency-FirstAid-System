@@ -1,0 +1,66 @@
+<div id="ageModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2>🎂 Tell Us Your Age</h2>
+            <p>Choose an age range so we can personalize your exercises, yoga, and meditation</p>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">Select an age range:</label>
+                <select id="ageRangeInput" class="form-input">
+                    <option value="5-10">5-10 years</option>
+                    <option value="11-20">11-20 years</option>
+                    <option value="21-35">21-35 years</option>
+                    <option value="36-55">36-55 years</option>
+                    <option value="56+">56+ years</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button onclick="saveAgeAndProceed()" class="btn-primary btn-modal">Save & Continue</button>
+                <button onclick="skipAge()" class="btn-secondary btn-modal">Skip (Default)</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openAgeModal() {
+        const modal = document.getElementById('ageModal');
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function saveAgeAndProceed() {
+        const ageRange = document.getElementById('ageRangeInput').value;
+        fetch('/api/save-age', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ age: ageRange, age_range: ageRange })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('ageModal').style.display = 'none';
+                location.reload();
+            } else {
+                alert('Failed to save age. Please try again.');
+            }
+        })
+        .catch(err => {
+            console.error('Error saving age:', err);
+            location.reload();
+        });
+    }
+
+    function skipAge() {
+        document.getElementById('ageModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('ageModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
