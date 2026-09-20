@@ -741,13 +741,24 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='hub.css') }}">
 </head>
 
 <body class="firstaid-body">
     <nav class="navbar">
         <div class="nav-container">
             <h1 class="logo">🏥 HealthHub Pro</h1>
-            <a href="/dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Dashboard</a>
+            <div class="nav-links" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                {% if logged_in %}
+                <span class="welcome-text"><i class="fas fa-user-circle"></i> {{ user_name }}</span>
+                <a href="/dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Dashboard</a>
+                {% else %}
+                <a href="/" class="back-link">Home</a>
+                <a href="/menstrual-health" class="back-link">Menstrual Health</a>
+                <a href="/login" class="back-link">Sign In</a>
+                {% endif %}
+                <button class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Toggle theme"></button>
+            </div>
         </div>
     </nav>
 
@@ -763,6 +774,12 @@
                 <i class="fas fa-shield-alt"></i>
                 Medical-Grade AI Analysis
             </div>
+            {% if not logged_in %}
+            <p style="margin-top:16px;font-size:14px;color:rgba(255,255,255,0.9);">
+                No account required for emergency first-aid guidance.
+                <a href="/login" style="color:#FFE66D;font-weight:700;">Sign in</a> for wellness tools.
+            </p>
+            {% endif %}
         </div>
     </section>
 
@@ -1168,5 +1185,6 @@
             document.getElementById('kit_type').value = value;
         }
     </script>
+    <script src="{{ url_for('static', filename='animations.js') }}"></script>
 </body>
 </html>

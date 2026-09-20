@@ -240,4 +240,262 @@ document.addEventListener('DOMContentLoaded', function() {
         const exerciseName = container.getAttribute('data-exercise-animation');
         container.innerHTML = getExerciseAnimation(exerciseName);
     });
+
+    // Initialize Theme & Health Reminders
+    initTheme();
+    ensureThemeToggle();
+    ensureReminderTrigger();
+    initHealthReminders();
 });
+
+/* ============================================
+   THEME MANAGER (DARK / LIGHT MODE TOGGLE)
+   ============================================ */
+
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    setTheme(savedTheme);
+}
+
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+
+    const toggleBtns = document.querySelectorAll('.theme-toggle-btn');
+    toggleBtns.forEach(btn => {
+        if (theme === 'dark') {
+            btn.innerHTML = btn.classList.contains('is-floating')
+                ? '<i class="fas fa-sun"></i>'
+                : '<i class="fas fa-sun text-amber-400"></i> <span>Light Mode</span>';
+            btn.classList.add('is-dark');
+            btn.setAttribute('title', 'Switch to Light Mode');
+        } else {
+            btn.innerHTML = btn.classList.contains('is-floating')
+                ? '<i class="fas fa-moon"></i>'
+                : '<i class="fas fa-moon text-indigo-400"></i> <span>Dark Mode</span>';
+            btn.classList.remove('is-dark');
+            btn.setAttribute('title', 'Switch to Dark Mode');
+        }
+    });
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+}
+
+// Auto-create a theme toggle button if the page does not ship one
+function ensureThemeToggle() {
+    if (document.querySelector('.theme-toggle-btn')) return;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'theme-toggle-btn is-floating';
+    btn.onclick = toggleTheme;
+    document.body.appendChild(btn);
+    setTheme(document.documentElement.getAttribute('data-theme') || 'light');
+}
+
+/* ============================================
+   HEALTH REMINDERS & NOTIFICATION SYSTEM
+   ============================================ */
+
+const HEALTH_TIPS = [
+    {
+        icon: 'fa-droplet',
+        color: '#06B6D4',
+        title: '💧 Hydration Break',
+        body: 'Time to take a sip of water! Staying hydrated maintains energy, focus, and healthy joint function.'
+    },
+    {
+        icon: 'fa-user-nurse',
+        color: '#10B981',
+        title: '🧘 Posture Check',
+        body: 'Sit up straight, roll your shoulders back, and un-hunch your neck. Your back will thank you!'
+    },
+    {
+        icon: 'fa-wind',
+        color: '#8B5CF6',
+        title: '🫁 Deep Breathing Break',
+        body: 'Take 3 slow, deep breaths right now. Inhale deeply through your nose, hold 3 seconds, exhale slowly.'
+    },
+    {
+        icon: 'fa-eye',
+        color: '#F59E0B',
+        title: '👀 20-20-20 Eye Care',
+        body: 'Give your eyes a break! Look away from your screen at an object 20 feet away for 20 seconds.'
+    },
+    {
+        icon: 'fa-child',
+        color: '#EC4899',
+        title: '🦵 Quick Stretch',
+        body: 'Unclench your jaw, relax your facial muscles, stretch out your hands, and flex your fingers.'
+    },
+    {
+        icon: 'fa-heart',
+        color: '#EF4444',
+        title: '❤️ Mindful Health Check',
+        body: 'Remember to take periodic health breaks throughout your day. Your health is your greatest wealth!'
+    }
+];
+
+let lastTipIndex = -1;
+let reminderInterval = null;
+let idleWatchInterval = null;
+let lastActivity = Date.now();
+
+const REMINDER_INTERVAL_MS = 10 * 60 * 1000;
+const IDLE_THRESHOLD_MS = 5 * 60 * 1000;
+
+function initHealthReminders() {
+    // Ensure toast container exists
+    if (!document.getElementById('health-reminder-container')) {
+        const container = document.createElement('div');
+        container.id = 'health-reminder-container';
+        document.body.appendChild(container);
+    }
+
+    // Request desktop notification permissions on interaction
+    if ("Notification" in window && Notification.permission === "default") {
+        document.addEventListener('click', function requestOnce() {
+            Notification.requestPermission();
+            document.removeEventListener('click', requestOnce);
+        }, { once: true });
+    }
+
+    // Schedule a periodic health tip (every 10 minutes)
+    if (!reminderInterval) {
+        reminderInterval = setInterval(triggerHealthReminder, REMINDER_INTERVAL_MS);
+    }
+
+    // Gentle reminder when the user is idle (no mouse/keyboard activity for 5 min)
+    function markActivity() { lastActivity = Date.now(); }
+    ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(function (evt) {
+        document.addEventListener(evt, markActivity, { passive: true });
+    });
+
+    if (!idleWatchInterval) {
+        idleWatchInterval = setInterval(function () {
+            if (document.visibilityState === 'hidden') return;
+            if (Date.now() - lastActivity >= IDLE_THRESHOLD_MS) {
+                lastActivity = Date.now();
+                triggerHealthReminder('We noticed it has been quiet for a while — stand up, stretch, and take a few deep breaths. Your body will thank you!');
+            }
+        }, 60 * 1000);
+    }
+
+    // Trigger notification when tab visibility changes (user leaves or comes back)
+    document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'hidden') {
+            sendBackgroundNotification();
+        } else {
+            // Show welcome back toast when user returns
+            setTimeout(() => {
+                triggerHealthReminder('Welcome back! Take a moment to check your posture & hydrate.');
+            }, 1000);
+        }
+    });
+}
+
+// Auto-create a floating "Health Tip" trigger button if the page does not ship one
+function ensureReminderTrigger() {
+    if (document.querySelector('.reminder-trigger-btn')) return;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'reminder-trigger-btn';
+    btn.innerHTML = '<i class="fas fa-heartbeat"></i> <span>Health Tip</span>';
+    btn.title = 'Get a quick health tip';
+    btn.onclick = function () {
+        triggerHealthReminder();
+    };
+    document.body.appendChild(btn);
+}
+
+function getRandomTip() {
+    let index;
+    do {
+        index = Math.floor(Math.random() * HEALTH_TIPS.length);
+    } while (index === lastTipIndex && HEALTH_TIPS.length > 1);
+    lastTipIndex = index;
+    return HEALTH_TIPS[index];
+}
+
+function triggerHealthReminder(customMessage) {
+    const tip = getRandomTip();
+    const messageBody = customMessage || tip.body;
+
+    // 1. Send desktop notification if tab is hidden / browser supports it
+    if ("Notification" in window && Notification.permission === "granted" && document.visibilityState === 'hidden') {
+        try {
+            new Notification(tip.title, {
+                body: messageBody,
+                icon: 'https://cdn-icons-png.flaticon.com/512/2966/2966327.png',
+                tag: 'health-hub-reminder'
+            });
+        } catch (e) {
+            console.log('Desktop notification error:', e);
+        }
+    }
+
+    // 2. Always show stylish in-app toast notification
+    showHealthToast(tip.title, messageBody, tip.icon, tip.color);
+}
+
+function sendBackgroundNotification() {
+    const tip = getRandomTip();
+    if ("Notification" in window && Notification.permission === "granted") {
+        try {
+            new Notification("❤️ HealthHub Pro Care Reminder", {
+                body: tip.title + ": " + tip.body,
+                tag: 'health-hub-background'
+            });
+        } catch (e) {}
+    }
+}
+
+function showHealthToast(title, body, iconClass, iconColor) {
+    const container = document.getElementById('health-reminder-container');
+    if (!container) return;
+
+    // Limit active toasts to 2
+    if (container.children.length >= 2) {
+        container.removeChild(container.firstChild);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'health-toast';
+    toast.innerHTML = `
+        <div class="toast-icon-badge" style="background:${iconColor || 'var(--primary-color)'};">
+            <i class="fas ${iconClass || 'fa-heart'}"></i>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-body">${body}</div>
+        </div>
+        <button class="toast-close" onclick="dismissToast(this)" title="Dismiss">&times;</button>
+    `;
+
+    container.appendChild(toast);
+
+    // Auto dismiss toast after 8 seconds
+    setTimeout(() => {
+        dismissToast(toast.querySelector('.toast-close'));
+    }, 8000);
+}
+
+function dismissToast(btn) {
+    if (!btn) return;
+    const toast = btn.closest('.health-toast');
+    if (toast && !toast.classList.contains('toast-hiding')) {
+        toast.classList.add('toast-hiding');
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 300);
+    }
+}
+

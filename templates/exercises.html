@@ -13,7 +13,7 @@
         }
 
         .exercise-hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
             padding: 60px 20px 80px;
             text-align: center;
             position: relative;
@@ -53,9 +53,9 @@
             justify-content: center;
             margin: 0 auto 24px;
             font-size: 48px;
-            color: white;
+            color: #78350f;
             backdrop-filter: blur(10px);
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(120, 53, 15, 0.25);
             animation: float 3s ease-in-out infinite;
         }
 
@@ -67,14 +67,14 @@
         .exercise-hero h1 {
             font-size: 42px;
             font-weight: 800;
-            color: white;
+            color: #78350f;
             margin-bottom: 16px;
             letter-spacing: -1px;
         }
 
         .exercise-hero p {
             font-size: 18px;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(120, 53, 15, 0.85);
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.7;
@@ -92,14 +92,14 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.35);
             padding: 10px 20px;
             border-radius: 50px;
-            color: white;
+            color: #78350f;
             font-size: 13px;
             font-weight: 600;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(120, 53, 15, 0.2);
         }
 
         .exercise-container {
@@ -138,8 +138,8 @@
         }
 
         .toolbar-tag.age {
-            background: #e8f4f8;
-            color: #1d3557;
+            background: #d3eaf8;
+            color: #0f3d57;
         }
 
         .toolbar-tag.intensity {
@@ -148,8 +148,8 @@
         }
 
         .toolbar-tag.duration {
-            background: #d4edda;
-            color: #155724;
+            background: #fef3c7;
+            color: #92400e;
         }
 
         .btn-change-age {
@@ -157,8 +157,8 @@
             align-items: center;
             gap: 8px;
             padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #f7971e 0%, #eab308 100%);
+            color: #fff;
             border: none;
             border-radius: 10px;
             font-size: 13px;
@@ -169,7 +169,7 @@
 
         .btn-change-age:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 20px rgba(247, 151, 30, 0.4);
         }
 
         .safety-banner {
@@ -229,7 +229,7 @@
         }
 
         .program-header.endurance {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
         }
 
         .program-header.balance {
@@ -322,9 +322,9 @@
         }
 
         .exercise-player-card:hover {
-            border-color: #667eea;
+            border-color: #f59e0b;
             transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
+            box-shadow: 0 12px 30px rgba(245, 158, 11, 0.2);
         }
 
         .video-screen {
@@ -362,12 +362,12 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: #e8f4f8;
+            background: #d9eefa;
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 12px;
             font-weight: 600;
-            color: #457b9d;
+            color: #125a84;
         }
 
         /* Tips Section */
@@ -404,9 +404,9 @@
         }
 
         .tip-box:hover {
-            border-color: #667eea;
+            border-color: #f59e0b;
             transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
         }
 
         .tip-box h3 {
@@ -436,7 +436,7 @@
         .placeholder-icon {
             width: 100px;
             height: 100px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -463,7 +463,7 @@
             align-items: center;
             gap: 8px;
             padding: 14px 32px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f7971e 0%, #eab308 100%);
             color: white;
             border: none;
             border-radius: 12px;
@@ -475,7 +475,7 @@
 
         .btn-unlock:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(247, 151, 30, 0.4);
         }
 
         @media (max-width: 768px) {
@@ -499,6 +499,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='hub.css') }}">
 </head>
 
 <body class="exercise-body">
@@ -508,6 +509,7 @@
             <div class="nav-links">
                 <span class="welcome-text"><i class="fas fa-user-circle"></i> {{ user_name }}</span>
                 <a href="/dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Dashboard</a>
+                <button class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Toggle theme"></button>
             </div>
         </div>
     </nav>
@@ -697,5 +699,6 @@
     <footer class="footer">
         <p>&copy; 2026 HealthHub Pro | Your Fitness Companion</p>
     </footer>
+    <script src="{{ url_for('static', filename='animations.js') }}"></script>
 </body>
 </html>

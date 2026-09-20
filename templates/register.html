@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - HealthHub Pro</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Create Account - HealthHub Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --reg-primary: #4A8C87;
-            --reg-secondary: #2F6B66;
-            --reg-accent: #7FB3AE;
+            --reg-primary: #6366F1;
+            --reg-gradient: linear-gradient(135deg, #6366F1 0%, #4F46E5 50%, #3730A3 100%);
+            --dark-heading: #0F172A;
         }
 
         * {
@@ -21,8 +23,9 @@
 
         body {
             min-height: 100vh;
-            display: flex;
-            background: #f2f7f6;
+            background: #0F172A;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            color: white;
         }
 
         .register-wrapper {
@@ -34,7 +37,7 @@
 
         /* Left Side - Features */
         .register-features-section {
-            background: linear-gradient(135deg, var(--reg-primary) 0%, var(--reg-secondary) 50%, var(--reg-accent) 100%);
+            background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #311B92 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -47,28 +50,12 @@
         .register-features-section::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
-            animation: featurePulse 4s ease-in-out infinite;
-        }
-
-        .register-features-section::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            right: -30%;
-            width: 80%;
-            height: 80%;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 50%);
-            animation: featurePulse 4s ease-in-out infinite 1s;
-        }
-
-        @keyframes featurePulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
+            top: -40%;
+            left: -30%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
         }
 
         .features-content {
@@ -83,18 +70,17 @@
         }
 
         .features-icon {
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            background: var(--reg-gradient);
+            border-radius: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 24px;
-            font-size: 48px;
+            font-size: 42px;
             color: white;
-            backdrop-filter: blur(10px);
-            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 16px 40px rgba(99, 102, 241, 0.4);
             animation: breathe 4s ease-in-out infinite;
         }
 
@@ -104,22 +90,23 @@
         }
 
         .features-header h2 {
-            font-size: 32px;
+            font-size: 34px;
             font-weight: 800;
             color: white;
             margin-bottom: 12px;
+            letter-spacing: -0.5px;
         }
 
         .features-header p {
             font-size: 16px;
-            color: rgba(255, 255, 255, 0.85);
+            color: #94A3B8;
             line-height: 1.6;
         }
 
         .benefits-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 18px;
         }
 
         .benefit-item {
@@ -127,69 +114,44 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            padding: 24px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
+            padding: 24px 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             transition: all 0.3s ease;
         }
 
         .benefit-item:hover {
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.15);
             transform: translateY(-4px);
         }
 
         .benefit-icon {
             width: 56px;
             height: 56px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
+            background: var(--reg-gradient);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             color: white;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
         }
 
         .benefit-text h4 {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
             color: white;
             margin-bottom: 4px;
         }
 
         .benefit-text p {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.75);
+            font-size: 13px;
+            color: #94A3B8;
             line-height: 1.4;
-        }
-
-        .trust-section {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            margin-top: 48px;
-        }
-
-        .trust-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .trust-item i {
-            font-size: 28px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .trust-item span {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.6);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         /* Right Side - Form */
@@ -197,104 +159,52 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px;
-            background: white;
-            position: relative;
+            padding: 40px 32px;
+            background: #F8FAFC;
+            color: var(--dark-heading);
             overflow-y: auto;
-        }
-
-        .register-form-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234A8C87' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
         .register-form-container {
             width: 100%;
-            max-width: 480px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .logo-section {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .logo-icon {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(135deg, var(--reg-primary) 0%, var(--reg-secondary) 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 32px;
-            color: white;
-            box-shadow: 0 15px 40px rgba(74, 140, 135, 0.3);
-            animation: logoFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .logo-section h1 {
-            font-size: 26px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--reg-primary) 0%, var(--reg-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 6px;
-        }
-
-        .logo-section p {
-            font-size: 14px;
-            color: #6c757d;
+            max-width: 500px;
         }
 
         .form-card {
             background: white;
-            border-radius: 24px;
-            padding: 32px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 28px;
+            padding: 40px 36px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
+            border: 1px solid #E2E8F0;
         }
 
         .form-card h2 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #2d3436;
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--dark-heading);
             margin-bottom: 6px;
             text-align: center;
         }
 
         .form-card .subtitle {
             font-size: 14px;
-            color: #6c757d;
-            margin-bottom: 24px;
+            color: #64748B;
+            margin-bottom: 28px;
             text-align: center;
         }
 
         .error-alert {
-            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
-            border-left: 4px solid #E63946;
-            color: #E63946;
+            background: #FEF2F2;
+            border-left: 4px solid #EF4444;
+            color: #B91C1C;
             padding: 14px 18px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .form-row {
@@ -304,15 +214,17 @@
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .form-label {
             display: block;
             font-size: 13px;
-            font-weight: 600;
-            color: #2d3436;
+            font-weight: 700;
+            color: #334155;
             margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .input-wrapper {
@@ -321,107 +233,73 @@
 
         .input-icon {
             position: absolute;
-            left: 14px;
+            left: 18px;
             top: 50%;
             transform: translateY(-50%);
-            color: #adb5bd;
-            font-size: 15px;
+            color: #94A3B8;
+            font-size: 16px;
             transition: color 0.3s ease;
         }
 
         .form-input {
             width: 100%;
-            padding: 13px 14px 13px 44px;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
+            padding: 14px 16px 14px 50px;
+            border: 2px solid #E2E8F0;
+            border-radius: 14px;
             font-size: 14px;
+            font-weight: 500;
             transition: all 0.3s ease;
-            background: #f8f9fa;
+            background: #F8FAFC;
+            color: #0F172A;
+            font-family: inherit;
         }
 
         .form-input:focus {
             outline: none;
             border-color: var(--reg-primary);
             background: white;
-            box-shadow: 0 0 0 4px rgba(74, 140, 135, 0.1);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
         }
 
         .form-input:focus ~ .input-icon {
             color: var(--reg-primary);
         }
 
-        .terms-check {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 24px;
-            font-size: 13px;
-            color: #6c757d;
-        }
-
-        .terms-check input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--reg-primary);
-            margin-top: 2px;
-        }
-
-        .terms-check a {
-            color: var(--reg-primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
         .btn-register {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, var(--reg-primary) 0%, var(--reg-secondary) 100%);
+            background: var(--reg-gradient);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-register::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .btn-register:hover::before {
-            left: 100%;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.35);
         }
 
         .btn-register:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(74, 140, 135, 0.4);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.5);
         }
 
         .login-link {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 24px;
             font-size: 14px;
-            color: #6c757d;
+            color: #64748B;
+            font-weight: 500;
         }
 
         .login-link a {
             color: var(--reg-primary);
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         @media (max-width: 1024px) {
@@ -434,10 +312,11 @@
             }
 
             .register-form-section {
-                padding: 24px;
+                padding: 32px 20px;
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='hub.css') }}">
 </head>
 
 <body>
@@ -447,10 +326,10 @@
             <div class="features-content">
                 <div class="features-header">
                     <div class="features-icon">
-                        <i class="fas fa-user-plus"></i>
+                        <i class="fas fa-heartbeat"></i>
                     </div>
                     <h2>Join HealthHub Pro</h2>
-                    <p>Start your personalized wellness journey with AI-powered health guidance</p>
+                    <p>Start your AI-powered wellness journey with age-personalized fitness, mindfulness, and health companions</p>
                 </div>
 
                 <div class="benefits-grid">
@@ -459,8 +338,18 @@
                             <i class="fas fa-robot"></i>
                         </div>
                         <div class="benefit-text">
-                            <h4>AI Analysis</h4>
-                            <p>Smart injury detection</p>
+                            <h4>AI First Aid</h4>
+                            <p>Instant injury analysis</p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="benefit-text">
+                            <h4>Menstrual Care</h4>
+                            <p>Cycle self-care tips</p>
                         </div>
                     </div>
 
@@ -470,7 +359,7 @@
                         </div>
                         <div class="benefit-text">
                             <h4>Workouts</h4>
-                            <p>Age-appropriate plans</p>
+                            <p>Age-personalized plans</p>
                         </div>
                     </div>
 
@@ -480,37 +369,8 @@
                         </div>
                         <div class="benefit-text">
                             <h4>Meditation</h4>
-                            <p>Guided sessions</p>
+                            <p>Guided mindfulness</p>
                         </div>
-                    </div>
-
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <i class="fas fa-leaf"></i>
-                        </div>
-                        <div class="benefit-text">
-                            <h4>Wellness</h4>
-                            <p>Complete relaxation</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="trust-section">
-                    <div class="trust-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Secure</span>
-                    </div>
-                    <div class="trust-item">
-                        <i class="fas fa-lock"></i>
-                        <span>Encrypted</span>
-                    </div>
-                    <div class="trust-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Free</span>
-                    </div>
-                    <div class="trust-item">
-                        <i class="fas fa-headset"></i>
-                        <span>Support</span>
                     </div>
                 </div>
             </div>
@@ -519,17 +379,9 @@
         <!-- Right Side - Form -->
         <div class="register-form-section">
             <div class="register-form-container">
-                <div class="logo-section">
-                    <div class="logo-icon">
-                        <i class="fas fa-heartbeat"></i>
-                    </div>
-                    <h1>HealthHub Pro</h1>
-                    <p>Create your free account</p>
-                </div>
-
                 <div class="form-card">
-                    <h2>Get Started</h2>
-                    <p class="subtitle">Fill in your details to create your account</p>
+                    <h2>Create Account</h2>
+                    <p class="subtitle">Fill in your details to get instant access</p>
 
                     {% if error %}
                     <div class="error-alert">
@@ -591,11 +443,6 @@
                             </div>
                         </div>
 
-                        <label class="terms-check">
-                            <input type="checkbox" required>
-                            <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
-                        </label>
-
                         <button type="submit" class="btn-register">
                             <i class="fas fa-user-plus"></i> Create Account
                         </button>
@@ -604,9 +451,13 @@
                     <div class="login-link">
                         Already have an account? <a href="/login">Sign in</a>
                     </div>
+                    <div class="login-link">
+                        Need help right now? <a href="/first-aid">Get public First Aid Guidance without signing up</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <script src="{{ url_for('static', filename='animations.js') }}"></script>
 </body>
 </html>

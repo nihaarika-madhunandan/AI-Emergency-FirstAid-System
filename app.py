@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from age_categories import get_age_label, get_duration_recommendation, normalize_age
 from activities import get_exercises_by_age, get_yoga_by_age, get_meditation_by_age, get_safety_warning as get_activity_safety
 from ai_service import get_enhanced_first_aid, analyze_injury_image
+from menstrual_health import list_menstrual_problems, get_menstrual_guidance
 
 load_dotenv()
 
@@ -15,8 +16,11 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-in-production")
 
 UPLOAD_FOLDER = 'uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 USERS_FILE = 'users.json'
 
@@ -45,15 +49,51 @@ def save_users(users):
 
 users = load_users()
 
+
+def is_logged_in():
+    return 'user' in session
+
+
+def session_user_name():
+    if not is_logged_in():
+        return None
+    return users.get(session['user'], {}).get('name', 'User')
+
+
+def record_module_visit(module):
+    if not is_logged_in():
+        return
+    username = session['user']
+    if username not in users:
+        return
+    if 'preferences' not in users[username]:
+        users[username]['preferences'] = {'last_injury_type': '', 'injury_history': []}
+    users[username]['preferences'].setdefault('module_visits', {})
+    module = module.lower()
+    visits = users[username]['preferences']['module_visits']
+    visits[module] = visits.get(module, 0) + 1
+    save_users(users)
+
+
+def build_module_stats(user_data):
+    visits = (user_data.get('preferences') or {}).get('module_visits', {})
+    modules = ['exercise', 'meditation', 'relaxation', 'menstrual', 'first_aid']
+    stats = {m: visits.get(m, 0) for m in modules}
+    total = sum(stats.values())
+    if total:
+        for m in modules:
+            stats[m] = int(round(stats[m] / total * 100))
+    stats['total'] = total
+    return stats
+
+
 def detect_injury(injury_text, injury_dropdown):
     text = injury_text.lower()
 
-    if "cut" in text or "bleeding" in text or "laceration" in text:
+    if "severe bleeding" in text or "hemorrhage" in text or "gushing" in text:
+        return "Severe Bleeding"
+    elif "cut" in text or "laceration" in text or "bleeding" in text:
         return "Cut/Laceration"
-    elif "burn" in text or "scald" in text:
-        if "severe" in text or "third" in text or "3rd" in text or "electrical" in text or "chemical" in text:
-            return "Severe Burn"
-        return "Burn (Minor/Moderate)"
     elif "snake" in text:
         return "Snake Bite"
     elif "fracture" in text or "bone" in text or "broken" in text or "broke" in text or "break" in text:
@@ -68,15 +108,15 @@ def detect_injury(injury_text, injury_dropdown):
         return "Puncture Wound"
     elif "animal" in text or "dog bite" in text or "cat bite" in text:
         return "Animal Bite"
-    elif "insect" in text or "bug" in text or "sting" in text:
+    elif "insect" in text or "bug bite" in text or "sting" in text:
         return "Insect Bite"
     elif "chemical" in text or "acid" in text:
         return "Chemical Burn"
     elif "electrical" in text or "electric" in text:
         return "Electrical Burn"
-    elif "heat" in text and ("exhaustion" in text):
+    elif "heat" in text and "exhaustion" in text:
         return "Heat Exhaustion"
-    elif "heat" in text and ("stroke" in text):
+    elif "heat" in text and "stroke" in text:
         return "Heat Stroke"
     elif "frost" in text or "freezing" in text:
         return "Frostbite"
@@ -84,7 +124,7 @@ def detect_injury(injury_text, injury_dropdown):
         return "Hypothermia"
     elif "poison" in text:
         return "Poisoning"
-    elif "choking" in text:
+    elif "choking" in text or "cannot breathe" in text:
         return "Choking"
     elif "allergic" in text or "allergy" in text or "hives" in text:
         return "Allergic Reaction"
@@ -92,12 +132,14 @@ def detect_injury(injury_text, injury_dropdown):
         return "Shock"
     elif "unconscious" in text or "fainted" in text or "passed out" in text:
         return "Unconsciousness"
-    elif "eye" in text:
-        return "Eye Injury"
-    elif "deep" in text or "severe bleeding" in text:
-        return "Severe Bleeding"
     elif "deep" in text and "wound" in text:
         return "Wound (Deep)"
+    elif "eye" in text:
+        return "Eye Injury"
+    elif "burn" in text or "scald" in text:
+        if "severe" in text or "third" in text or "3rd" in text:
+            return "Severe Burn"
+        return "Burn (Minor/Moderate)"
 
     if injury_dropdown:
         return injury_dropdown
@@ -115,18 +157,45 @@ def dashboard():
     if 'user' not in session:
         return redirect('/login')
     user_data = users.get(session['user'], {})
-    return render_template('dashboard.html', user_name=user_data.get('name', 'User'))
+    record_module_visit('dashboard')
+    return render_template('dashboard.html', user_name=user_data.get('name', 'User'),
+                           module_stats=build_module_stats(user_data))
 
 @app.route('/first-aid')
 def first_aid():
+    record_module_visit('first_aid')
+    return render_template(
+        'first_aid.html',
+        injury_types=INJURY_TYPES,
+        logged_in=is_logged_in(),
+        user_name=session_user_name()
+    )
+
+
+@app.route('/menstrual-health', methods=['GET', 'POST'])
+def menstrual_health():
     if 'user' not in session:
         return redirect('/login')
-    return render_template('first_aid.html', injury_types=INJURY_TYPES)
+    record_module_visit('menstrual')
+    selected = None
+    guidance = None
+    if request.method == 'POST':
+        selected = (request.form.get('problem') or '').strip()
+        guidance = get_menstrual_guidance(selected)
+    return render_template(
+        'menstrual_health.html',
+        problems=list_menstrual_problems(),
+        selected=selected,
+        guidance=guidance,
+        logged_in=is_logged_in(),
+        user_name=session_user_name()
+    )
 
 @app.route('/exercises')
 def exercises():
     if 'user' not in session:
         return redirect('/login')
+    record_module_visit('exercise')
     user_data = users.get(session['user'], {})
     age = user_data.get('age')
     if not age:
@@ -143,6 +212,7 @@ def exercises():
 def meditation():
     if 'user' not in session:
         return redirect('/login')
+    record_module_visit('meditation')
     user_data = users.get(session['user'], {})
     age = user_data.get('age')
     if not age:
@@ -158,6 +228,7 @@ def meditation():
 def relaxation():
     if 'user' not in session:
         return redirect('/login')
+    record_module_visit('relaxation')
     user_data = users.get(session['user'], {})
     age = user_data.get('age')
     
@@ -266,9 +337,6 @@ def save_age():
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
-    if 'user' not in session:
-        return redirect('/login')
-
     file = request.files.get('image')
     injury_text = request.form.get('injury_text', '')
     injury_dropdown = request.form.get('injury_dropdown', '')
@@ -293,27 +361,38 @@ def analyze():
     else:
         injury = "General Injury"
 
-    result = get_enhanced_first_aid(injury, injury_text, kit, kit_type)
+    refine_text = "" if injury_dropdown else injury_text
 
-    username = session['user']
-    if username in users:
-        if 'preferences' not in users[username]:
-            users[username]['preferences'] = {'last_injury_type': '', 'injury_history': []}
-        users[username]['preferences']['last_injury_type'] = result['injury_type']
-        history = users[username]['preferences'].get('injury_history', [])
-        if result['injury_type'] not in history:
-            history.append(result['injury_type'])
-            if len(history) > 10:
-                history = history[-10:]
-        users[username]['preferences']['injury_history'] = history
-        save_users(users)
+    ai_severity = None
+    ai_confidence = None
+    if ai_analysis and not injury_text and not injury_dropdown:
+        ai_severity = ai_analysis.get('severity')
+        ai_confidence = ai_analysis.get('confidence')
+
+    result = get_enhanced_first_aid(injury, refine_text, kit, kit_type, ai_severity, ai_confidence)
+
+    if is_logged_in():
+        username = session['user']
+        if username in users:
+            if 'preferences' not in users[username]:
+                users[username]['preferences'] = {'last_injury_type': '', 'injury_history': []}
+            users[username]['preferences']['last_injury_type'] = result['injury_type']
+            history = users[username]['preferences'].get('injury_history', [])
+            if result['injury_type'] not in history:
+                history.append(result['injury_type'])
+                if len(history) > 10:
+                    history = history[-10:]
+            users[username]['preferences']['injury_history'] = history
+            save_users(users)
 
     return render_template('result.html', result=result['steps'], injury=result['injury_type'],
                            severity=result['severity'], confidence=result['confidence'],
                            severity_color=result['severity_color'],
                            severity_icon=result['severity_icon'],
                            immediate_actions=result['immediate_actions'],
-                           ai_analysis=ai_analysis)
+                           ai_analysis=ai_analysis,
+                           logged_in=is_logged_in(),
+                           user_name=session_user_name())
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

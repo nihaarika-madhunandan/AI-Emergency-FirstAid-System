@@ -9,11 +9,11 @@
     <style>
         .meditation-body {
             min-height: 100vh;
-            background: linear-gradient(180deg, #f5f0ff 0%, #e8dff5 100%);
+            background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
         }
 
         .meditation-hero {
-            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 50%, #74b9ff 100%);
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
             padding: 60px 20px 80px;
             text-align: center;
             position: relative;
@@ -130,8 +130,8 @@
             border-radius: 8px;
             font-size: 13px;
             font-weight: 600;
-            background: #f5f0ff;
-            color: #6c5ce7;
+            background: #fff7ed;
+            color: #f97316;
         }
 
         .btn-change-age {
@@ -139,7 +139,7 @@
             align-items: center;
             gap: 8px;
             padding: 12px 24px;
-            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
             color: white;
             border: none;
             border-radius: 10px;
@@ -190,7 +190,7 @@
         }
 
         .meditation-card.sleep::before {
-            background: linear-gradient(90deg, #6c5ce7 0%, #a29bfe 100%);
+            background: linear-gradient(90deg, #f97316 0%, #fb923c 100%);
         }
 
         .meditation-card:hover {
@@ -220,7 +220,7 @@
         }
 
         .meditation-card.sleep .meditation-card-icon {
-            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
             color: white;
         }
 
@@ -314,7 +314,7 @@
         }
 
         .btn-start-session.sleep {
-            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
             color: white;
         }
 
@@ -331,7 +331,7 @@
             box-shadow: 0 20px 60px rgba(108, 92, 231, 0.15);
             text-align: center;
             margin-bottom: 40px;
-            border: 3px solid #a29bfe;
+            border: 3px solid #fb923c;
         }
 
         .session-card h2 {
@@ -342,13 +342,13 @@
         }
 
         .session-card h2 i {
-            color: #6c5ce7;
+            color: #f97316;
         }
 
         .timer-display {
             font-size: 64px;
             font-weight: 800;
-            color: #6c5ce7;
+            color: #f97316;
             margin: 24px 0;
             font-family: 'Courier New', monospace;
         }
@@ -364,7 +364,7 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -491,7 +491,7 @@
         }
 
         .guide-section h2 i {
-            color: #6c5ce7;
+            color: #f97316;
         }
 
         .guide-grid {
@@ -501,7 +501,7 @@
         }
 
         .guide-step {
-            background: linear-gradient(135deg, #f5f0ff 0%, #e8dff5 100%);
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
             border-radius: 16px;
             padding: 24px;
             text-align: center;
@@ -510,7 +510,7 @@
         }
 
         .guide-step:hover {
-            border-color: #6c5ce7;
+            border-color: #f97316;
             transform: translateY(-4px);
             box-shadow: 0 8px 25px rgba(108, 92, 231, 0.15);
         }
@@ -518,7 +518,7 @@
         .guide-step-number {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -556,7 +556,7 @@
         .placeholder-icon {
             width: 100px;
             height: 100px;
-            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -583,7 +583,7 @@
             align-items: center;
             gap: 8px;
             padding: 14px 32px;
-            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
             color: white;
             border: none;
             border-radius: 12px;
@@ -616,6 +616,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='hub.css') }}">
 </head>
 
 <body class="meditation-body">
@@ -625,6 +626,7 @@
             <div class="nav-links">
                 <span class="welcome-text"><i class="fas fa-user-circle"></i> {{ user_name }}</span>
                 <a href="/dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Dashboard</a>
+                <button class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Toggle theme"></button>
             </div>
         </div>
     </nav>
@@ -1009,5 +1011,6 @@
             }
         }
     </script>
+    <script src="{{ url_for('static', filename='animations.js') }}"></script>
 </body>
 </html>

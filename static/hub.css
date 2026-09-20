@@ -1,0 +1,907 @@
+/* ============================================================
+   HealthHub Pro — hub.css
+   Loaded last on every page. Adds:
+     1) Legacy variables used by style.css / result page
+     2) Bold, attractive polish for the 5 core sections
+     3) Full dark-mode overrides for every page pattern
+   ============================================================ */
+
+/* ---------- Legacy variables (shared by style.css) ---------- */
+:root {
+  --bg-white: #FFFFFF;
+  --bg-light: #F1F5F9;
+  --text-dark: #0F172A;
+  --text-light: #64748B;
+  --border-light: #E2E8F0;
+  --hub-accent: #4F46E5;
+  --hub-glow: rgba(99, 102, 241, 0.35);
+}
+
+[data-theme="dark"] {
+  --bg-white: #151E33;
+  --bg-light: #1B2440;
+  --text-dark: #F1F5F9;
+  --text-light: #94A3B8;
+  --border-light: rgba(255, 255, 255, 0.1);
+  --hub-accent: #818CF8;
+  --hub-glow: rgba(129, 140, 248, 0.35);
+}
+
+html { scroll-behavior: smooth; }
+
+/* ============================================================
+   BOLD + ATTRACTIVE POLISH (works in both themes)
+   ============================================================ */
+
+/* Hero headings — bolder, with depth */
+.firstaid-hero h1,
+.mh-hero h1,
+.exercise-hero h1,
+.meditation-hero h1,
+.relax-hero h1 {
+  font-weight: 900 !important;
+  letter-spacing: -0.5px;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+.firstaid-hero,
+.mh-hero,
+.exercise-hero,
+.meditation-hero,
+.relax-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* soft radial glow behind the hero text */
+.firstaid-hero::before,
+.mh-hero::before,
+.exercise-hero::before,
+.meditation-hero::before,
+.relax-hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 400px;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.16), transparent 70%);
+  pointer-events: none;
+}
+
+/* -------------------- section headers -------------------- */
+.section-header,
+.firstaid-card-header h2,
+.mh-card h2,
+.program-header h2,
+.guide-section h2,
+.tips-section h2,
+.wellness-section h2,
+.profile-card h3,
+.progress-card h3,
+.info-card h3 {
+  letter-spacing: -0.3px;
+}
+
+/* animated underline accent for section titles */
+.section-header h2::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 4px;
+  margin: 12px auto 0;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #4F46E5, #A855F7, #EC4899);
+  background-size: 200% 100%;
+  animation: hubGradientSlide 4s linear infinite;
+}
+.guide-section h2::after,
+.tips-section h2::after,
+.wellness-section h2::after {
+  margin-left: 0;
+}
+
+@keyframes hubGradientSlide {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* -------------------- cards and tiles -------------------- */
+.firstaid-main-card,
+.sidebar-card,
+.mh-card,
+.program-card,
+.meditation-card,
+.session-card,
+.relax-card,
+.guide-section,
+.tips-section,
+.wellness-section,
+.feature-card,
+.step-card,
+.quick-action-card,
+.profile-card,
+.progress-card,
+.info-card,
+.result-container {
+  border: 1px solid rgba(99, 102, 241, 0.10);
+}
+
+.firstaid-main-card,
+.sidebar-card,
+.mh-card,
+.meditation-card,
+.session-card,
+.relax-card,
+.program-card,
+.quick-action-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .firstaid-main-card:hover,
+  .sidebar-card:hover,
+  .mh-card:hover,
+  .meditation-card:hover,
+  .session-card:hover,
+  .relax-card:hover,
+  .program-card:hover,
+  .quick-action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 45px -18px rgba(99, 102, 241, 0.45);
+  }
+}
+
+/* enter animation for page content */
+.firstaid-container,
+.mh-container,
+.exercise-container,
+.meditation-container,
+.relax-container,
+.dash-container,
+.home-entry-card,
+.content-container {
+  animation: hubRise 0.55s ease both;
+}
+
+@keyframes hubRise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* -------------------- key elements -------------------- */
+.firstaid-badge i,
+.mh-hero i,
+.exercise-hero i,
+.meditation-hero i,
+.relax-hero i {
+  animation: hubGlowPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes hubGlowPulse {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.55)); transform: scale(1.06); }
+}
+
+/* shine sweep on primary CTAs */
+.btn-login,
+.btn-register,
+.firstaid-submit-btn,
+.hero-btn-primary,
+.cta-btn-white,
+.mh-submit,
+.btn-change-age,
+.btn-save-age,
+.btn-submit-final {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-login::after,
+.btn-register::after,
+.firstaid-submit-btn::after,
+.hero-btn-primary::after,
+.cta-btn-white::after,
+.mh-submit::after,
+.btn-change-age::after,
+.btn-save-age::after,
+.btn-submit-final::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  animation: hubShine 3.6s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes hubShine {
+  0% { left: -150%; }
+  55% { left: 130%; }
+  100% { left: 130%; }
+}
+
+/* graceful card entrance stagger */
+.firstaid-main-card { animation-delay: 0.05s; }
+.sidebar-card { animation-delay: 0.12s; }
+.mh-card { animation-delay: 0.1s; }
+.program-card { animation-delay: 0.08s; }
+
+/* ============================================================
+   THEME TOGGLE + REMINDER FLOATING CONTROLS
+   ============================================================ */
+
+.theme-toggle-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 96px;
+  height: 40px;
+  padding: 0 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.78);
+  color: #F8FAFC;
+  font-family: var(--font-family, inherit);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.38);
+  box-shadow: 0 12px 28px -8px rgba(99, 102, 241, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.theme-toggle-btn:active { transform: translateY(0) scale(0.95); }
+
+.theme-toggle-btn i {
+  font-size: 15px;
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle-btn:hover i { transform: rotate(-25deg) scale(1.12); }
+
+/* Moon icon (light mode -> click to switch to dark) */
+.theme-toggle-btn .fa-moon {
+  color: #A5B4FC;
+  filter: drop-shadow(0 0 6px rgba(129, 140, 248, 0.9));
+}
+
+/* Sun icon (dark mode -> click to switch to light) */
+.theme-toggle-btn .fa-sun {
+  color: #FDE047;
+  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.9));
+}
+
+/* Dark-mode pill state */
+.theme-toggle-btn.is-dark,
+[data-theme="dark"] .theme-toggle-btn {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #FFFFFF;
+  box-shadow: 0 8px 24px -6px rgba(124, 58, 237, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* Floating variant (pages without a navbar) */
+.theme-toggle-btn.is-floating {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 99999;
+  min-width: 50px;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+.theme-toggle-btn.is-floating i { font-size: 18px; }
+.theme-toggle-btn.is-floating span { display: none; }
+.theme-toggle-btn.is-floating:hover { transform: scale(1.1); }
+
+/* Compact circle on small screens */
+@media (max-width: 720px) {
+  .theme-toggle-btn { min-width: 44px; width: 44px; padding: 0; justify-content: center; border-radius: 50%; }
+  .theme-toggle-btn span { display: none; }
+}
+
+.reminder-trigger-btn {
+  font-family: inherit;
+  z-index: 99997;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 12px 30px -8px rgba(79, 70, 229, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.reminder-trigger-btn:hover { transform: translateY(-3px) scale(1.04); }
+
+/* ============================================================
+   DARK MODE — GLOBAL SHELL
+   ============================================================ */
+
+[data-theme="dark"] body {
+  background: linear-gradient(180deg, #0B0F19 0%, #111827 100%);
+  color: #CBD5E1;
+}
+
+[data-theme="dark"] .navbar {
+  background: rgba(11, 15, 25, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="dark"] .navbar .nav-link,
+[data-theme="dark"] .navbar-brand,
+[data-theme="dark"] .navbar .navbar-link { color: #CBD5E1; }
+[data-theme="dark"] .navbar .nav-link:hover { color: #FFFFFF; }
+
+[data-theme="dark"] .welcome-text {
+  background: rgba(255, 255, 255, 0.10);
+  color: #E2E8F0;
+}
+
+[data-theme="dark"] .logout-btn {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #FCA5A5;
+}
+[data-theme="dark"] .logout-btn:hover { background: #EF4444; color: white; }
+
+[data-theme="dark"] .footer {
+  color: #94A3B8;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
+   DARK MODE — FIRST AID
+   ============================================================ */
+
+[data-theme="dark"] .firstaid-body,
+[data-theme="dark"] body.firstaid-body {
+  background: linear-gradient(180deg, #0B0F19 0%, #141B2C 100%) !important;
+}
+
+[data-theme="dark"] .firstaid-main-card,
+[data-theme="dark"] .sidebar-card {
+  background: #171F33 !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .firstaid-card-header {
+  background: linear-gradient(135deg, #1D2740, #101828) !important;
+}
+[data-theme="dark"] .firstaid-card-header h2 { color: #F1F5F9; }
+[data-theme="dark"] .firstaid-card-header p { color: #94A3B8; }
+[data-theme="dark"] .firstaid-card-body h3 { color: #E2E8F0 !important; }
+[data-theme="dark"] .firstaid-card-body p { color: #94A3B8 !important; }
+[data-theme="dark"] .firstaid-card-body label { color: #E2E8F0 !important; }
+
+[data-theme="dark"] .upload-zone {
+  background: #141C30;
+  border-color: rgba(148, 163, 184, 0.3);
+}
+[data-theme="dark"] .upload-zone:hover {
+  background: #1A2440;
+  border-color: #E63946;
+}
+[data-theme="dark"] .upload-zone h4 { color: #E2E8F0; }
+[data-theme="dark"] .upload-zone p { color: #94A3B8; }
+
+[data-theme="dark"] .file-preview {
+  background: #1A2440;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="dark"] .file-preview .file-name,
+[data-theme="dark"] .file-preview .file-size { color: #E2E8F0; }
+
+[data-theme="dark"] .step-circle { background: #243049; color: #94A3B8; }
+[data-theme="dark"] .step-label { color: #94A3B8; }
+[data-theme="dark"] .progress-steps::before { background: rgba(255, 255, 255, 0.12); }
+[data-theme="dark"] .step-circle.active,
+[data-theme="dark"] .step-circle.completed { color: white; }
+
+[data-theme="dark"] .injury-card { background: #141C30; }
+[data-theme="dark"] .injury-card span { color: #E2E8F0; }
+[data-theme="dark"] .injury-card:hover { background: #1A2440; border-color: #457B9D; }
+[data-theme="dark"] .injury-card.selected {
+  background: #2A2030;
+  border-color: #E63946;
+}
+
+[data-theme="dark"] .form-divider span { color: #94A3B8; }
+[data-theme="dark"] .form-divider::before,
+[data-theme="dark"] .form-divider::after { background: rgba(255, 255, 255, 0.1); }
+
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-floating-input input {
+  background: #141C30;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #E2E8F0;
+}
+[data-theme="dark"] .form-input:hover,
+[data-theme="dark"] .form-floating-input input:hover { border-color: #E63946; }
+[data-theme="dark"] .form-input::placeholder,
+[data-theme="dark"] .form-floating-input input::placeholder { color: #64748B; }
+[data-theme="dark"] .form-input:focus,
+[data-theme="dark"] .form-floating-input input:focus {
+  background: #181F33;
+  border-color: #E63946;
+}
+
+[data-theme="dark"] .kit-card { background: #141C30; border-color: rgba(255, 255, 255, 0.12); }
+[data-theme="dark"] .kit-card h4 { color: #E2E8F0; }
+[data-theme="dark"] .kit-card p { color: #94A3B8; }
+[data-theme="dark"] .kit-card.selected { background: #2A2030; border-color: #E63946; }
+
+[data-theme="dark"] .btn-back {
+  background: #1A2440;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #94A3B8;
+}
+[data-theme="dark"] .btn-back:hover { background: #243049; color: #E2E8F0; }
+
+[data-theme="dark"] .feature-item { background: #141C30; }
+[data-theme="dark"] .feature-item:hover { background: #1A2440; }
+[data-theme="dark"] .feature-text h4 { color: #E2E8F0; }
+[data-theme="dark"] .feature-text p { color: #94A3B8; }
+
+[data-theme="dark"] .stat-item { background: #141C30; }
+[data-theme="dark"] .stat-number { color: #E2E8F0; }
+[data-theme="dark"] .stat-label { color: #94A3B8; }
+
+[data-theme="dark"] .safety-tip {
+  background: rgba(217, 163, 30, 0.15);
+  color: #FDE68A;
+}
+[data-theme="dark"] .safety-tip strong { color: #FDE68A; }
+
+[data-theme="dark"] .sidebar-card h3 { color: #E2E8F0; }
+[data-theme="dark"] .sidebar-card h3 i { color: #E63946; }
+[data-theme="dark"] .sidebar-card ul li,
+[data-theme="dark"] .sidebar-card li { color: #94A3B8; }
+
+[data-theme="dark"] .firstaid-card-body .form-navigation { border-color: rgba(255, 255, 255, 0.1); }
+
+/* ============================================================
+   DARK MODE — MENSTRUAL HEALTH
+   ============================================================ */
+
+[data-theme="dark"] .mh-body,
+[data-theme="dark"] body.mh-body {
+  background: linear-gradient(180deg, #0B0F19 0%, #1A1118 100%) !important;
+}
+
+[data-theme="dark"] .mh-card {
+  background: #171F33 !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .mh-card h2 { color: #F1F5F9; }
+[data-theme="dark"] .mh-card .lead { color: #94A3B8; }
+
+[data-theme="dark"] .mh-option {
+  background: #141C30;
+  border-color: rgba(183, 110, 121, 0.3);
+  color: #E8D8DA;
+}
+[data-theme="dark"] .mh-option:hover { border-color: #C9848A; color: #FFF; }
+[data-theme="dark"] .mh-option.selected {
+  background: #2A2030;
+  border-color: #B76E79;
+  color: #F0B9C0;
+}
+
+[data-theme="dark"] .mh-modal-overlay { background: rgba(5, 8, 15, 0.72); }
+[data-theme="dark"] .mh-modal-card { background: #171F33; }
+[data-theme="dark"] .mh-modal-header { border-color: rgba(255, 255, 255, 0.1); }
+[data-theme="dark"] .mh-modal-header h2 { color: #F0B9C0; }
+[data-theme="dark"] .mh-close-btn { background: rgba(255, 255, 255, 0.08); color: #C9848A; }
+[data-theme="dark"] .mh-close-btn:hover { background: #8C4A56; color: #FFF; }
+
+[data-theme="dark"] .mh-block { background: #141C30; }
+[data-theme="dark"] .mh-block h3 { color: #E2E8F0; }
+[data-theme="dark"] .mh-block ul, [data-theme="dark"] .mh-block li { color: #A5B4CB; }
+[data-theme="dark"] .mh-block li::marker { color: #B76E79; }
+
+[data-theme="dark"] .mh-urgent { background: rgba(230, 57, 70, 0.12); }
+[data-theme="dark"] .mh-urgent h4 { color: #FCA5A5; }
+[data-theme="dark"] .mh-urgent li { color: #FCA5A5; }
+
+[data-theme="dark"] .mh-disclaimer {
+  background: rgba(217, 163, 30, 0.12);
+  color: #FDE68A;
+}
+
+[data-theme="dark"] .guest-note { color: #94A3B8; }
+
+/* ============================================================
+   DARK MODE — EXERCISES
+   ============================================================ */
+
+[data-theme="dark"] .exercise-body,
+[data-theme="dark"] body.exercise-body {
+  background: linear-gradient(180deg, #0B0F19 0%, #15151F 100%) !important;
+}
+
+[data-theme="dark"] .exercise-toolbar { background: #171F33; }
+[data-theme="dark"] .toolbar-tag { color: #CBD5E1; border-color: rgba(255, 255, 255, 0.1); }
+[data-theme="dark"] .toolbar-tag.age { background: #23405C; color: #BFDBFE; }
+[data-theme="dark"] .toolbar-tag.intensity { background: rgba(217, 163, 30, 0.2); color: #FDE68A; }
+[data-theme="dark"] .toolbar-tag.duration { background: rgba(245, 158, 11, 0.22); color: #FDE68A; }
+
+[data-theme="dark"] .program-card {
+  background: #151E33;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .program-header h2 { color: #F1F5F9; }
+[data-theme="dark"] .program-description { color: #A5B4CB; }
+
+[data-theme="dark"] .intensity-bar { background: #141C30; }
+[data-theme="dark"] .intensity-label { color: #94A3B8; }
+[data-theme="dark"] .intensity-dot { background: #2A3550; }
+[data-theme="dark"] .intensity-dot.filled { background: linear-gradient(135deg, #F59E0B, #FFD200); }
+
+[data-theme="dark"] .exercise-player-card { background: #141C30; background-image: linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0)); }
+[data-theme="dark"] .exercise-card-details h4 { color: #E2E8F0; }
+[data-theme="dark"] .exercise-card-details p { color: #94A3B8; }
+[data-theme="dark"] .tag-duration { background: #24486B; color: #BFDBFE; }
+
+[data-theme="dark"] .tips-section { background: #151E33; }
+[data-theme="dark"] .tips-section h2 { color: #F1F5F9; }
+[data-theme="dark"] .tips-section h2 i { color: #F59E0B; }
+[data-theme="dark"] .tip-box { background: linear-gradient(135deg, #141C30, #1A2440); border-color: rgba(255, 255, 255, 0.08); }
+[data-theme="dark"] .tip-box h3 { color: #E2E8F0; }
+[data-theme="dark"] .tip-box p { color: #94A3B8; }
+
+[data-theme="dark"] .placeholder-card { background: #151E33; border-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .placeholder-card h2 { color: #F1F5F9; }
+[data-theme="dark"] .placeholder-card p { color: #94A3B8; }
+[data-theme="dark"] .placeholder-card i { opacity: 0.7; }
+
+[data-theme="dark"] .safety-banner {
+  background: rgba(251, 191, 36, 0.12);
+  border-color: #F59E0B;
+  color: #FDE68A;
+}
+[data-theme="dark"] .safety-banner i { color: #FBBF24; }
+
+/* ============================================================
+   DARK MODE — MEDITATION
+   ============================================================ */
+
+[data-theme="dark"] .meditation-body,
+[data-theme="dark"] body.meditation-body {
+  background: linear-gradient(180deg, #0B0F19 0%, #161122 100%) !important;
+}
+
+[data-theme="dark"] .meditation-toolbar { background: #171F33; }
+[data-theme="dark"] .meditation-toolbar .toolbar-tag { background: rgba(249, 115, 22, 0.22); color: #FDBA74; }
+
+[data-theme="dark"] .meditation-card {
+  background: #171F33;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+[data-theme="dark"] .meditation-card h2 { color: #F1F5F9; }
+[data-theme="dark"] .meditation-desc { color: #A5B4CB; }
+[data-theme="dark"] .meta-tag { background: #141C30; color: #94A3B8; }
+
+[data-theme="dark"] .benefits h4 { color: #E2E8F0; }
+[data-theme="dark"] .benefits li { color: #A5B4CB; }
+
+[data-theme="dark"] .session-card {
+  background: #171F33;
+  border: 1px solid #F97316;
+}
+[data-theme="dark"] .session-card h2 { color: #F1F5F9; }
+[data-theme="dark"] .session-message { color: #94A3B8; }
+
+[data-theme="dark"] .guide-section { background: #151E33; }
+[data-theme="dark"] .guide-section h2 { color: #F1F5F9; }
+[data-theme="dark"] .guide-step { background: linear-gradient(135deg, #151E33, #1E2137); }
+[data-theme="dark"] .guide-step h3 { color: #E2E8F0; }
+[data-theme="dark"] .guide-step p { color: #94A3B8; }
+[data-theme="dark"] .guide-step .guide-num { color: #FB923C; }
+
+[data-theme="dark"] .meditation-card:hover,
+[data-theme="dark"] .session-card:hover {
+  border-color: #FB923C;
+  box-shadow: 0 18px 45px -18px rgba(251, 146, 60, 0.5);
+}
+
+/* ============================================================
+   DARK MODE — RELAXATION
+   ============================================================ */
+
+[data-theme="dark"] .relax-body,
+[data-theme="dark"] body.relax-body {
+  background: linear-gradient(180deg, #0B0F19 0%, #0E1A2B 100%) !important;
+}
+
+[data-theme="dark"] .relax-toolbar { background: #171F33; }
+[data-theme="dark"] .relax-toolbar .toolbar-tag { background: rgba(0, 180, 216, 0.15); color: #7DD3FC; }
+
+[data-theme="dark"] .relax-card {
+  background: #171F33;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .relax-card-header h2 { color: #F1F5F9; }
+[data-theme="dark"] .relax-card-header p { color: #94A3B8; }
+
+[data-theme="dark"] .yoga-pose-card { background: #141C30; }
+[data-theme="dark"] .yoga-pose-name { color: #E2E8F0; }
+[data-theme="dark"] .yoga-pose-duration { color: #7DD3FC; }
+[data-theme="dark"] .yoga-benefits { background: linear-gradient(135deg, rgba(245, 87, 108, 0.14), rgba(245, 87, 108, 0.04)); }
+[data-theme="dark"] .yoga-benefits h4 { color: #E2E8F0; }
+[data-theme="dark"] .yoga-benefits li { color: #A5B4CB; }
+
+[data-theme="dark"] .music-player { background: linear-gradient(135deg, #0F172A, #0B1120) !important; }
+[data-theme="dark"] .aroma-item { background: #141C30; }
+[data-theme="dark"] .aroma-name { color: #E2E8F0; }
+[data-theme="dark"] .aroma-header:hover { background: #1A2440; }
+[data-theme="dark"] .aroma-toggle { background: #2A3550; color: #94A3B8; }
+[data-theme="dark"] .aroma-toggle:hover { color: #A7F3D0; }
+[data-theme="dark"] .aroma-content-inner p { color: #94A3B8; }
+[data-theme="dark"] .aroma-tip { background: rgba(16, 185, 129, 0.12); color: #A7F3D0; }
+[data-theme="dark"] .aroma-tip strong { color: #6EE7B7; }
+[data-theme="dark"] .aroma-tip i { color: #34D399; }
+
+[data-theme="dark"] .safety-box { background: rgba(251, 191, 36, 0.1); }
+[data-theme="dark"] .safety-box h4 { color: #FDE68A; }
+[data-theme="dark"] .safety-box li { color: #FDE68A; }
+
+[data-theme="dark"] .wellness-section { background: #151E33; }
+[data-theme="dark"] .wellness-section h2 { color: #F1F5F9; }
+[data-theme="dark"] .wellness-tip { background: linear-gradient(135deg, #0E2A3F, #123047); border-color: rgba(0, 180, 216, 0.25); }
+[data-theme="dark"] .wellness-tip h3 { color: #E2E8F0; }
+[data-theme="dark"] .wellness-tip p { color: #94A3B8; }
+[data-theme="dark"] .wellness-tip i { color: #38BDF8; }
+
+/* ============================================================
+   DARK MODE — DASHBOARD
+   ============================================================ */
+
+[data-theme="dark"] .dash-body,
+[data-theme="dark"] body.dash-body {
+  background: #0B0F19 !important;
+  color: #CBD5E1;
+}
+
+[data-theme="dark"] .dash-body .navbar {
+  background: rgba(11, 15, 25, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(16px);
+}
+[data-theme="dark"] .dash-body .welcome-text { background: rgba(255, 255, 255, 0.1); color: #E2E8F0; }
+
+[data-theme="dark"] .quick-action-card,
+[data-theme="dark"] .profile-card,
+[data-theme="dark"] .progress-card,
+[data-theme="dark"] .info-card,
+[data-theme="dark"] .features-section .feature-card {
+  background: #151E33;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .quick-action-card h3,
+[data-theme="dark"] .profile-card h3,
+[data-theme="dark"] .progress-card h3,
+[data-theme="dark"] .info-card h3 { color: #F1F5F9; }
+[data-theme="dark"] .quick-action-card p,
+[data-theme="dark"] .profile-card p,
+[data-theme="dark"] .info-card p,
+[data-theme="dark"] .feature-card p,
+[data-theme="dark"] .quick-action-card .quick-link { color: #94A3B8; }
+
+[data-theme="dark"] .user-email { color: #94A3B8; }
+[data-theme="dark"] .profile-stat {
+  background: #0F1B2D;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .profile-stat .stat-value { color: #F1F5F9; }
+[data-theme="dark"] .profile-stat .stat-label { color: #94A3B8; }
+
+[data-theme="dark"] .progress-bar-container { background: #243049; }
+[data-theme="dark"] .progress-label { color: #E2E8F0; }
+[data-theme="dark"] .progress-percent { color: #E2E8F0; }
+
+[data-theme="dark"] .tip-item {
+  background: #0F1B2D;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .tip-item:hover { background: #1A2440; border-color: #4F46E5; }
+[data-theme="dark"] .tip-content h4 { color: #E2E8F0; }
+[data-theme="dark"] .tip-content p { color: #94A3B8; }
+[data-theme="dark"] .tip-date { color: #64748B; }
+
+[data-theme="dark"] .section-header h2 { color: #F1F5F9; }
+[data-theme="dark"] .section-header p { color: #94A3B8; }
+
+[data-theme="dark"] .feature-card h4,
+[data-theme="dark"] .feature-card h3,
+[data-theme="dark"] .step-card h4 { color: #F1F5F9; }
+[data-theme="dark"] .feature-card p,
+[data-theme="dark"] .step-card p { color: #94A3B8; }
+
+/* ============================================================
+   DARK MODE — HOME / INDEX
+   ============================================================ */
+
+[data-theme="dark"] .navbar-brand span,
+[data-theme="dark"] .navbar-brand { color: #F1F5F9; }
+[data-theme="dark"] .nav-link { color: #94A3B8; }
+[data-theme="dark"] .nav-link:hover { color: #FFFFFF; }
+[data-theme="dark"] .nav-btn-outline { color: #A5B4FC; border-color: rgba(129, 140, 248, 0.5); }
+[data-theme="dark"] .nav-btn-outline:hover { background: rgba(99, 102, 241, 0.18); color: #E0E7FF; }
+
+[data-theme="dark"] .home-entry-card,
+[data-theme="dark"] .feature-card,
+[data-theme="dark"] .step-card {
+  background: #151E33;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .home-entry-card h3,
+[data-theme="dark"] .home-entry-card h4 { color: #F1F5F9; }
+[data-theme="dark"] .home-entry-card p { color: #94A3B8; }
+[data-theme="dark"] .home-entry-card:hover,
+[data-theme="dark"] .feature-card:hover { border-color: rgba(129, 140, 248, 0.5); box-shadow: 0 16px 40px -16px rgba(0, 0, 0, 0.6); }
+[data-theme="dark"] .section-header h2 span { color: #818CF8; }
+
+/* ============================================================
+   DARK MODE — RESULT PAGE
+   ============================================================ */
+
+[data-theme="dark"] .result-container { background: #151E33; }
+[data-theme="dark"] .result-title,
+[data-theme="dark"] .steps-title { color: #F1F5F9; }
+[data-theme="dark"] .injury-name {
+  background: linear-gradient(135deg, #818CF8 0%, #6EE7B7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+[data-theme="dark"] .step-item { background: #0F1B2D; border-left-color: #6366F1; }
+[data-theme="dark"] .step-item:hover { box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.6); }
+[data-theme="dark"] .step-text { color: #E2E8F0; }
+[data-theme="dark"] .step-item .step-number,
+[data-theme="dark"] .step-number {
+  background: #4F46E5;
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .warning-box {
+  background: rgba(239, 68, 68, 0.12);
+  color: #FCA5A5;
+  border-left-color: #EF4444;
+}
+
+[data-theme="dark"] .severity-label { color: #CBD5E1; }
+[data-theme="dark"] .confidence-badge { background: #243049; color: #E2E8F0; }
+
+[data-theme="dark"] .ai-analysis-box {
+  background: rgba(76, 175, 80, 0.12);
+  border-left-color: #4CAF50;
+}
+[data-theme="dark"] .ai-analysis-box h3 { color: #86EFAC; }
+[data-theme="dark"] .ai-analysis-box p { color: #A7F3D0; }
+
+[data-theme="dark"] .immediate-actions {
+  background: rgba(255, 152, 0, 0.1);
+  border-left-color: #FF9800;
+}
+[data-theme="dark"] .immediate-actions h3 { color: #FDE68A; }
+[data-theme="dark"] .result-actions .btn-secondary {
+  background: #1A2440;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #E2E8F0;
+}
+[data-theme="dark"] .result-actions .btn-secondary:hover { background: #243049; }
+
+/* ============================================================
+   DARK MODE — LOGIN / REGISTER
+   ============================================================ */
+
+[data-theme="dark"] .form-card { background: #151E33 !important; }
+[data-theme="dark"] .form-card h2 { color: #F1F5F9; }
+[data-theme="dark"] .form-card .subtitle,
+[data-theme="dark"] .register-form-container .subtitle { color: #94A3B8; }
+
+[data-theme="dark"] .form-label,
+[data-theme="dark"] label.form-label { color: #A5B4CB; }
+[data-theme="dark"] .form-input {
+  background: #0F1B2D;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #E2E8F0;
+}
+[data-theme="dark"] .form-input:hover { border-color: rgba(99, 102, 241, 0.6); }
+[data-theme="dark"] .form-input:focus { background: #141C30; border-color: #818CF8; }
+[data-theme="dark"] .form-input::placeholder { color: #64748B; }
+[data-theme="dark"] .input-icon { color: #64748B; }
+
+[data-theme="dark"] .remember-me,
+[data-theme="dark"] .terms-check { color: #94A3B8; }
+[data-theme="dark"] .guest-prompt { background: #0F1B2D; color: #A5B4CB; }
+[data-theme="dark"] .guest-prompt a,
+[data-theme="dark"] .register-link a,
+[data-theme="dark"] .login-link a { color: #818CF8; }
+[data-theme="dark"] .register-link,
+[data-theme="dark"] .login-link { color: #94A3B8; }
+
+[data-theme="dark"] .error-alert {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #FCA5A5;
+}
+
+[data-theme="dark"] .feature-icon { color: #818CF8; }
+[data-theme="dark"] .benefit-icon { background: rgba(99, 102, 241, 0.15); }
+[data-theme="dark"] .benefit-icon i { color: #818CF8; }
+[data-theme="dark"] .benefit-text h3 { color: #F1F5F9; }
+[data-theme="dark"] .benefit-text p { color: #94A3B8; }
+[data-theme="dark"] .features-header h2 { color: #F1F5F9; }
+[data-theme="dark"] .features-header p { color: #94A3B8; }
+
+/* ============================================================
+   DARK MODE — AGE VERIFICATION / MISC
+   ============================================================ */
+
+[data-theme="dark"] .modal-overlay,
+[data-theme="dark"] .age-modal-overlay { background: rgba(5, 8, 15, 0.74); }
+[data-theme="dark"] .modal-card,
+[data-theme="dark"] .age-modal-card { background: #171F33; }
+[data-theme="dark"] .modal-card h2 { color: #F1F5F9; }
+[data-theme="dark"] .age-picker-card h3 { color: #F1F5F9; }
+[data-theme="dark"] .modal-card p { color: #94A3B8; }
+[data-theme="dark"] .age-option,
+[data-theme="dark"] .range-btn { color: #CBD5E1; }
+[data-theme="dark"] .age-option:hover,
+[data-theme="dark"] .range-btn:hover { color: #FFFFFF; }
+
+/* toast / reminder dark tweaks */
+[data-theme="dark"] .health-toast { background: #1B2440; color: #E2E8F0; }
+[data-theme="dark"] .health-toast .toast-close { color: #94A3B8; }
+
+/* reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .firstaid-container,
+  .mh-container,
+  .exercise-container,
+  .meditation-container,
+  .relax-container,
+  .dash-container,
+  .home-entry-card,
+  .content-container {
+    animation: none;
+  }
+  .btn-login::after,
+  .btn-register::after,
+  .firstaid-submit-btn::after,
+  .hero-btn-primary::after,
+  .cta-btn-white::after,
+  .mh-submit::after,
+  .btn-change-age::after,
+  .btn-save-age::after,
+  .btn-submit-final::after,
+  .section-header h2::after {
+    animation: none;
+  }
+}

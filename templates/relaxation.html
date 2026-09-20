@@ -219,7 +219,7 @@
         }
 
         .relax-card-icon.aroma {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            background: linear-gradient(135deg, #4FACFE 0%, #2C67D1 100%);
         }
 
         .relax-card-header h2 {
@@ -567,7 +567,7 @@
         }
 
         .aroma-item:hover {
-            border-color: #43e97b;
+            border-color: #4FACFE;
         }
 
         .aroma-header {
@@ -613,7 +613,7 @@
         }
 
         .aroma-item.active .aroma-toggle {
-            background: #43e97b;
+            background: #4FACFE;
             color: white;
             transform: rotate(180deg);
         }
@@ -823,6 +823,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='hub.css') }}">
 </head>
 
 <body class="relax-body">
@@ -832,6 +833,7 @@
             <div class="nav-links">
                 <span class="welcome-text"><i class="fas fa-user-circle"></i> {{ user_name }}</span>
                 <a href="/dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Dashboard</a>
+                <button class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Toggle theme"></button>
             </div>
         </div>
     </nav>
@@ -1365,5 +1367,6 @@
             initMusicPlayer();
         });
     </script>
+    <script src="{{ url_for('static', filename='animations.js') }}"></script>
 </body>
 </html>

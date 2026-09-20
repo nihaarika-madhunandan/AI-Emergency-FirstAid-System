@@ -15,7 +15,7 @@ INJURY_TYPE_MAPPING = {
     "insect": "Insect Bite", "bug bite": "Insect Bite", "mosquito": "Insect Bite",
     "animal": "Animal Bite", "dog bite": "Animal Bite", "cat bite": "Animal Bite",
     "chemical": "Chemical Burn", "acid": "Chemical Burn",
-    "electrical": "Electrical Burn", "electric": "Electrical Burn", "shock": "Electrical Burn",
+    "electrical": "Electrical Burn", "electric": "Electrical Burn",
     "heat exhaustion": "Heat Exhaustion", "dehydrated": "Heat Exhaustion",
     "heat stroke": "Heat Stroke", "sunstroke": "Heat Stroke",
     "frostbite": "Frostbite", "freezing": "Frostbite",
@@ -239,13 +239,19 @@ def get_ai_first_aid(injury_type, severity, has_kit, kit_type):
 
     return steps
 
-def get_enhanced_first_aid(injury_type, injury_text="", has_kit="yes", kit_type="basic"):
+def get_enhanced_first_aid(injury_type, injury_text="", has_kit="yes", kit_type="basic", ai_severity=None, ai_confidence=None):
     if injury_text:
         detected = analyze_injury_type(injury_text)
         if detected != "General Injury":
             injury_type = detected
 
-    severity_data = analyze_severity(injury_type, injury_text)
+    if ai_severity and ai_severity.lower() in ("mild", "moderate", "severe"):
+        severity_data = {
+            "severity": ai_severity.lower().capitalize(),
+            "confidence": ai_confidence if ai_confidence else 0.85
+        }
+    else:
+        severity_data = analyze_severity(injury_type, injury_text)
     severity = severity_data["severity"]
     confidence = severity_data["confidence"]
 

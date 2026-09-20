@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menstrual Health Guidance - HealthHub Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --mh-primary: #B76E79;
+            --mh-secondary: #8C4A56;
+            --mh-accent: #4A3D10;
+            --mh-grad: linear-gradient(135deg, #EF8195 0%, #E2657F 50%, #C24561 100%);
+        }
+
+        .mh-body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FFF8F6 0%, #F4E8EA 100%);
+        }
+
+        .mh-hero {
+            background: var(--mh-grad);
+            padding: 52px 20px 72px;
+            text-align: center;
+            color: white;
+        }
+
+        .mh-hero h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .mh-hero p {
+            max-width: 640px;
+            margin: 0 auto;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        .mh-container {
+            max-width: 960px;
+            margin: -36px auto 0;
+            padding: 0 24px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .mh-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 12px 40px rgba(140, 74, 86, 0.12);
+        }
+
+        .mh-card h2 {
+            font-size: 20px;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+
+        .mh-card .lead {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .mh-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .mh-option {
+            border: 2px solid #f0e4e6;
+            background: #faf7f7;
+            border-radius: 14px;
+            padding: 16px;
+            cursor: pointer;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            color: #4A3D10;
+            transition: all 0.2s ease;
+        }
+
+        .mh-option:hover {
+            border-color: var(--mh-primary);
+            transform: translateY(-2px);
+        }
+
+        .mh-option.selected {
+            border-color: var(--mh-secondary);
+            background: #fff1f3;
+            box-shadow: 0 6px 16px rgba(140, 74, 86, 0.15);
+        }
+
+        .mh-submit {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            background: var(--mh-grad);
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .mh-submit:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Popup Modal Overlay */
+        .mh-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(6px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeInModal 0.3s ease;
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .mh-modal-card {
+            background: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 680px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUpModal 0.3s ease;
+            padding: 32px;
+            position: relative;
+        }
+
+        @keyframes slideUpModal {
+            from { transform: translateY(30px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .mh-modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0e4e6;
+            padding-bottom: 16px;
+        }
+
+        .mh-modal-header h2 {
+            font-size: 22px;
+            color: #C96C7E;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .mh-close-btn {
+            background: #f0e4e6;
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 20px;
+            color: #C96C7E;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .mh-close-btn:hover {
+            background: #C96C7E;
+            color: white;
+        }
+
+        .mh-block {
+            background: #faf7f7;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+        }
+
+        .mh-block h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #2d3436;
+        }
+
+        .mh-block ul {
+            margin: 0 0 0 18px;
+            color: #4b5563;
+            font-size: 14px;
+        }
+
+        .mh-block li {
+            margin-bottom: 6px;
+        }
+
+        .mh-urgent {
+            background: #fff5f5;
+            border-left: 4px solid #E63946;
+        }
+
+        .mh-disclaimer {
+            background: #fff8e8;
+            border-left: 4px solid #D9A31E;
+            border-radius: 12px;
+            padding: 16px 18px;
+            font-size: 13px;
+            color: #6b5a20;
+            margin-top: 8px;
+        }
+
+        .guest-note {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #6c757d;
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='hub.css') }}">
+</head>
+<body class="mh-body">
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🏥 HealthHub Pro</h1>
+            <div class="nav-links">
+                {% if logged_in %}
+                <span class="welcome-text"><i class="fas fa-user-circle"></i> {{ user_name }}</span>
+                <a href="/dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Dashboard</a>
+                {% else %}
+                <a href="/" class="back-link">Home</a>
+                <a href="/first-aid" class="back-link">First Aid</a>
+                <a href="/login" class="back-link">Sign In</a>
+                {% endif %}
+                <button class="theme-toggle-btn" type="button" onclick="toggleTheme()" title="Toggle theme"></button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="mh-hero">
+        <h1>Menstrual Health Guidance</h1>
+        <p>Select the problem you are experiencing to see general self-care information. This is not a medical diagnosis.</p>
+    </section>
+
+    <div class="mh-container">
+        <div class="mh-card">
+            <h2>Select the problem you’re experiencing</h2>
+            <p class="lead">Choose one option, then view general guidance. For severe, sudden, or frightening symptoms, seek emergency or in-person medical care.</p>
+
+            <form action="/menstrual-health" method="POST">
+                <input type="hidden" name="problem" id="problem" value="{{ selected or '' }}">
+                <div class="mh-grid">
+                    {% for item in problems %}
+                    <button type="button" class="mh-option {% if selected == item.id %}selected{% endif %}" data-id="{{ item.id }}" onclick="selectProblem(this)">
+                        {{ item.label }}
+                    </button>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="mh-submit" id="mh-submit" {% if not selected %}disabled style="opacity:0.6;cursor:not-allowed;"{% endif %}>
+                    Show general guidance
+                </button>
+            </form>
+
+            {% if selected and not guidance %}
+            <p class="lead" style="margin-top:20px;color:#E63946;">Please select a listed problem to continue.</p>
+            {% endif %}
+
+            {% if guidance %}
+            <!-- Interactive Guidance Popup Modal -->
+            <div class="mh-modal-overlay" id="guidanceModal" onclick="handleBackdropClick(event)">
+                <div class="mh-modal-card">
+                    <div class="mh-modal-header">
+                        <div>
+                            <h2><i class="fas fa-heartbeat" style="color:#C9848A;"></i> {{ guidance.title }}</h2>
+                            <p class="lead" style="margin:4px 0 0;font-size:13px;color:#6c757d;">General self-care guidance — not a confirmed medical diagnosis.</p>
+                        </div>
+                        <button type="button" class="mh-close-btn" onclick="closeGuidanceModal()" title="Close">&times;</button>
+                    </div>
+
+                    <div class="mh-block">
+                        <h3><i class="fas fa-hand-holding-heart" style="color:#C9848A;"></i> General self-care measures</h3>
+                        <ul>
+                            {% for item in guidance.self_care %}
+                            <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="mh-block">
+                        <h3><i class="fas fa-bolt" style="color:#D9A31E;"></i> What you can do immediately</h3>
+                        <ul>
+                            {% for item in guidance.immediate %}
+                            <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="mh-block {% if guidance.serious %}mh-urgent{% endif %}">
+                        <h3><i class="fas fa-user-md" style="color:#E63946;"></i> When to seek medical attention</h3>
+                        <ul>
+                            {% for item in guidance.seek_care %}
+                            <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="mh-disclaimer">
+                        <strong><i class="fas fa-exclamation-circle"></i> Important:</strong> {{ guidance.disclaimer }}
+                    </div>
+
+                    <div style="margin-top:24px;text-align:center;">
+                        <button type="button" class="mh-submit" onclick="closeGuidanceModal()">
+                            <i class="fas fa-check-circle"></i> Got It / Select Another Concern
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if not logged_in %}
+            <p class="guest-note">Want exercise, meditation, and saved wellness tools? <a href="/register">Create an account</a> or <a href="/login">sign in</a>. Emergency first aid remains available without login.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 HealthHub Pro | General menstrual health information</p>
+    </footer>
+
+    <script>
+        function selectProblem(btn) {
+            document.querySelectorAll('.mh-option').forEach(function (el) {
+                el.classList.remove('selected');
+            });
+            btn.classList.add('selected');
+            document.getElementById('problem').value = btn.getAttribute('data-id');
+            var submit = document.getElementById('mh-submit');
+            submit.disabled = false;
+            submit.style.opacity = '1';
+            submit.style.cursor = 'pointer';
+        }
+
+        function closeGuidanceModal() {
+            var modal = document.getElementById('guidanceModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function handleBackdropClick(event) {
+            if (event.target.id === 'guidanceModal') {
+                closeGuidanceModal();
+            }
+        }
+    </script>
+    <script src="{{ url_for('static', filename='animations.js') }}"></script>
+</body>
+</html>
