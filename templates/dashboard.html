@@ -510,7 +510,7 @@
         .progress-fill.meditation { background: var(--meditation-grad); }
         .progress-fill.relaxation { background: var(--relaxation-grad); }
         .progress-fill.firstaid { background: var(--emergency-grad); }
-        .progress-fill.menstrual { background: linear-gradient(135deg, #C9848A 0%, #8C4A56 100%); }
+        .progress-fill.menstrual { background: linear-gradient(135deg, #FF6B85 0%, #E63E5E 100%); }
 
         .progress-percent {
             width: 50px;
@@ -717,7 +717,7 @@
                 <div class="welcome-badge">
                     <i class="fas fa-star"></i> Verified Wellness Member
                 </div>
-                <h1>Welcome Back, <span>{{ user_name }}</span></h1>
+                <h1>Welcome, <span>{{ user_name }}</span></h1>
                 <p>Select your personalized health activity or emergency assistance tool below to continue your wellness journey.</p>
             </div>
             <div class="hero-right">
@@ -851,7 +851,7 @@
                         <div class="progress-percent">{{ module_stats.relaxation }}%</div>
                     </div>
                     <div class="progress-item">
-                        <div class="progress-label"><i class="fas fa-heart" style="color: #B76E79;"></i> Menstrual</div>
+                        <div class="progress-label"><i class="fas fa-heart" style="color: #FF5C87;"></i> Menstrual</div>
                         <div class="progress-bar-container">
                             <div class="progress-fill menstrual" style="width: {{ module_stats.menstrual }}%;"></div>
                         </div>

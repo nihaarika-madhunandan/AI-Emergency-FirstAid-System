@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --mh-primary: #B76E79;
-            --mh-secondary: #8C4A56;
+            --mh-primary: #8E1E3A;
+            --mh-secondary: #6E1228;
             --mh-accent: #4A3D10;
-            --mh-grad: linear-gradient(135deg, #EF8195 0%, #E2657F 50%, #C24561 100%);
+            --mh-grad: linear-gradient(135deg, #A8324E 0%, #831E39 55%, #5E122A 100%);
         }
 
         .mh-body {
@@ -164,7 +164,7 @@
 
         .mh-modal-header h2 {
             font-size: 22px;
-            color: #C96C7E;
+            color: #A8324E;
             font-weight: 800;
             margin: 0;
         }
@@ -176,7 +176,7 @@
             height: 38px;
             border-radius: 50%;
             font-size: 20px;
-            color: #C96C7E;
+            color: #A8324E;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -186,7 +186,7 @@
         }
 
         .mh-close-btn:hover {
-            background: #C96C7E;
+            background: #A8324E;
             color: white;
         }
 
@@ -296,14 +296,14 @@
                 <div class="mh-modal-card">
                     <div class="mh-modal-header">
                         <div>
-                            <h2><i class="fas fa-heartbeat" style="color:#C9848A;"></i> {{ guidance.title }}</h2>
+                            <h2><i class="fas fa-heartbeat" style="color:#8E1E3A;"></i> {{ guidance.title }}</h2>
                             <p class="lead" style="margin:4px 0 0;font-size:13px;color:#6c757d;">General self-care guidance — not a confirmed medical diagnosis.</p>
                         </div>
                         <button type="button" class="mh-close-btn" onclick="closeGuidanceModal()" title="Close">&times;</button>
                     </div>
 
                     <div class="mh-block">
-                        <h3><i class="fas fa-hand-holding-heart" style="color:#C9848A;"></i> General self-care measures</h3>
+                        <h3><i class="fas fa-hand-holding-heart" style="color:#8E1E3A;"></i> General self-care measures</h3>
                         <ul>
                             {% for item in guidance.self_care %}
                             <li>{{ item }}</li>
