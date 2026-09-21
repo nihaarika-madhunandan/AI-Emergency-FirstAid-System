@@ -557,6 +557,27 @@ html { scroll-behavior: smooth; }
 [data-theme="dark"] .program-header h2 { color: #F1F5F9; }
 [data-theme="dark"] .program-description { color: #A5B4CB; }
 
+/* ============================================================
+   DARK MODE — SECTION HEROES (knock bright heroes back so the
+   white .logo / hero text stays readable in dark mode)
+   ============================================================ */
+[data-theme="dark"] .firstaid-hero {
+  background: linear-gradient(135deg, #7F1D1D 0%, #991B1B 45%, #450A0A 100%) !important;
+}
+[data-theme="dark"] .mh-hero {
+  background: linear-gradient(135deg, #4C1230 0%, #6E1228 50%, #30091C 100%) !important;
+}
+[data-theme="dark"] .exercise-hero {
+  background: linear-gradient(135deg, #713F12 0%, #92400E 45%, #3B1604 100%) !important;
+}
+[data-theme="dark"] .meditation-hero {
+  background: linear-gradient(135deg, #7C2D12 0%, #9A3412 45%, #431407 100%) !important;
+}
+[data-theme="dark"] .relax-hero {
+  background: linear-gradient(135deg, #0C4A6E 0%, #075985 45%, #082F49 100%) !important;
+}
+
+
 [data-theme="dark"] .intensity-bar { background: #141C30; }
 [data-theme="dark"] .intensity-label { color: #94A3B8; }
 [data-theme="dark"] .intensity-dot { background: #2A3550; }
